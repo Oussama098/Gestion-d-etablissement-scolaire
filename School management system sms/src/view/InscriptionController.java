@@ -80,8 +80,8 @@ public class InscriptionController implements Initializable{
             }
     
         } catch (Exception e) {
-          //  JOptionPane.showMessageDialog(null, e);
-          alert.errorMessage("les coordonnees incorrectes");
+          e.printStackTrace();
+          alert.errorMessage(e.getMessage());
         }
         }
 

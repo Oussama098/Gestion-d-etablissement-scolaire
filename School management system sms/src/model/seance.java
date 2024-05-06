@@ -26,12 +26,38 @@ public class seance {
         this.observation = observation;
     }
 
+    public seance(int id_seance) {
+        this.id_seance = id_seance;
+    }
+    
+    
+
     public int getId_seance() {
         return id_seance;
     }
 
     public void setId_seance(int id_seance) {
         this.id_seance = id_seance;
+    }
+    
+    public String getNomMatiere(){
+        return seancegenerique.getMatiere().getNom();
+    }
+    
+    public String getNomModule(){
+        return seancegenerique.getModule().getNom();
+    }
+    
+    public String getJour(){
+        return seancegenerique.getJour();
+    }
+    
+    public String getHeureDeb(){
+        return seancegenerique.getDatedeb();
+    }
+    
+    public String getHeureFin(){
+        return seancegenerique.getDatefin();
     }
 
     public seancegenerique getSeancegenerique() {

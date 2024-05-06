@@ -134,9 +134,25 @@ public class AddStudentController implements Initializable {
         
     }
 
+    boolean formValidate() {
+        if (student_fname.getText().isEmpty() ||
+            student_lname.getText().isEmpty() ||
+            student_email.getText().isEmpty() ||
+            student_phone.getText().isEmpty() ||
+            student_birthDate.getValue() == null ||
+            student_gender.getSelectionModel().isEmpty() ||
+            student_birthplace.getText().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
     @FXML
     void addBtn(ActionEvent event) {
         if(event.getSource() == student_addBtn){
+            if(!formValidate()){
+                alert.errorMessage("Form Invalid");
+                return;
+            }
             String fname=student_fname.getText();
             String lname = student_lname.getText();
             String email = student_email.getText();
@@ -154,7 +170,7 @@ public class AddStudentController implements Initializable {
             try {
                 int userId = etd.insert(new user(lname, fname, email, birthDate, birthPlace, Phone, gender, imagePath));
                 etd.insert(new etudiant(new user(userId), new filiere(filiereId) , new classe(classeId)));
-                alert.successMessage("The Student added successfully");
+                alert.successMessage("L'etudiant est ajoutee avec succes");
                 ClearBtn();
             } catch (Exception e) {
                 alert.errorMessage(e.getMessage());

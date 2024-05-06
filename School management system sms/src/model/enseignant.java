@@ -89,6 +89,10 @@ public class enseignant {
         return user.getSexe();
     }
     
+    public String getPhoto(){
+        return user.getPhoto();
+    }
+    
     public String getNomSpecialite(){
         return specialite.getNom();
     }

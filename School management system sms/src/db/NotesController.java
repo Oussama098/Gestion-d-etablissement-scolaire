@@ -4,10 +4,13 @@
  */
 package db;
 
+import javafx.collections.ObservableList;
+
 /**
  *
  * @author oussa
  */
 public class NotesController {
     
+//    public ObservableList get
 }

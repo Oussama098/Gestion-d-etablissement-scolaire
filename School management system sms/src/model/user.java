@@ -24,6 +24,19 @@ public class user {
         this.photo = photo;
         this.role = role;
     }
+    
+    public user(int id_user, String nom, String prenom, String email, String dateNais, String lieuNais, String Tele, String sexe, String photo) {
+        this.id_user = id_user;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+        this.dateNais = dateNais;
+        this.lieuNais = lieuNais;
+        this.Tele = Tele;
+        this.sexe = sexe;
+        this.photo = photo;
+    }
+    
 
     public user( String nom, String prenom, String email, String dateNais, String lieuNais, String Tele, String sexe, String photo) {
         this.nom = nom;

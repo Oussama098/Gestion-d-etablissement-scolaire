@@ -4,6 +4,8 @@
  */
 package model;
 
+import javafx.scene.control.CheckBox;
+
 /**
  *
  * @author oussa
@@ -13,6 +15,15 @@ public class etudiant {
     private user User;
     private filiere filiere;
     private classe classe;
+    private CheckBox select;
+
+    public CheckBox getSelect() {
+        return select;
+    }
+
+    public void setSelect(CheckBox select) {
+        this.select = select;
+    }
    
 
     public etudiant(int id_etudiant, user User, filiere filiere , classe classe) {
@@ -20,16 +31,19 @@ public class etudiant {
         this.User = User;
         this.filiere = filiere;
         this.classe= classe;
+        this.select= new CheckBox();
     }
 
     public etudiant(user User, filiere filiere, classe classe) {
         this.User = User;
         this.filiere = filiere;
         this.classe = classe;
+        this.select= new CheckBox();
     }
 
     public etudiant(int id_etudiant) {
         this.id_etudiant = id_etudiant;
+        this.select= new CheckBox();
     }
     
     
@@ -82,6 +96,9 @@ public class etudiant {
         return User.getNom();
     }
     
+    public String getNomComplet(){
+        return User.getNom()+" "+User.getPrenom();
+    }
     public String getDateNais(){
         return User.getDateNais();
     }

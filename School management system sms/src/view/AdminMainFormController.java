@@ -3,9 +3,7 @@ package view;
 import db.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.chart.AreaChart;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.LineChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -20,6 +18,7 @@ import db.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -44,13 +43,27 @@ import model.seance;
 import model.user;
 import org.apache.poi.ss.usermodel.*;
 import java.util.Iterator;
+import javafx.scene.Node;
+import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import model.cycle;
 import model.specialite;
 
 public class AdminMainFormController implements Initializable {
     
-@FXML
+    @FXML
+    private ComboBox<?> ABSComboBox;
+
+    @FXML
+    private BarChart<String, Number> AbsenceChart;
+    
+    @FXML
+    private CategoryAxis Months;
+
+    @FXML
+    private NumberAxis NbrAbs;
+
+    @FXML
     private ComboBox<?> Classes;
 
     @FXML
@@ -82,9 +95,6 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> Student_col_Lname;
-        
-    @FXML
-    private TableColumn<?, ?> Teacher_col_Cycle;
 
     @FXML
     private TableColumn<?, ?> Student_col_phone;
@@ -96,9 +106,6 @@ public class AdminMainFormController implements Initializable {
     private Button Student_deleteBtn;
 
     @FXML
-    private AreaChart<?, ?> dashboard_chart_DS;
-        
-    @FXML
     private TableView<?> Student_tableView;
 
     @FXML
@@ -109,6 +116,9 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> Teacher_col_BirthPlace;
+
+    @FXML
+    private TableColumn<?, ?> Teacher_col_Cycle;
 
     @FXML
     private TableColumn<?, ?> Teacher_col_email;
@@ -124,6 +134,9 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> Teacher_col_phone;
+
+    @FXML
+    private TableColumn<?, ?> Teacher_col_photo;
 
     @FXML
     private TableColumn<?, ?> Teacher_col_specility;
@@ -160,6 +173,9 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private Button addTeacher_clearBtn;
+
+    @FXML
+    private ComboBox<String> addTeacher_cycle;
 
     @FXML
     private Button addTeacher_deleteBtn;
@@ -208,9 +224,9 @@ public class AdminMainFormController implements Initializable {
 
     @FXML
     private Label greet_username;
-    
+
     @FXML
-    private ComboBox<String> addTeacher_cycle;
+    private Button logout_btn;
     
     private Image image;
     
@@ -232,11 +248,11 @@ public class AdminMainFormController implements Initializable {
     
     private enseignant teacher = tsh.getTeacherById(InscriptionController.autoDATA.getUser().getId_user());
     
+    private AbsenceEtudiantController absence= new AbsenceEtudiantController();
+    
     static etudiant etudiant;
     
     private AlertMessage alert = new AlertMessage();
-    
-    private Map<Integer, String> ClassMap = new HashMap<>();
 
     @FXML
     void switchForm(ActionEvent event) {
@@ -245,6 +261,8 @@ public class AdminMainFormController implements Initializable {
             dashboard_CL.setText(cl.CountClasses()+"");
             dashboard_TS.setText(etd.CountStudents()+"");
             dashboard_TT.setText(tsh.countAllTeachers()+"");
+            populateABSclasses();
+            AbsenceChartDS();
             addStudent_form.setVisible(false);
             addTeacher_form.setVisible(false);
         }
@@ -256,9 +274,119 @@ public class AdminMainFormController implements Initializable {
             populateCBGender();
             populateCBSpeciality();
             populateCBCycle();
+            addTeacherClearBtn();
         }
     }
 
+    void AbsenceChartDS(){
+        AbsenceChart.getData().clear();
+        XYChart.Series chart = new XYChart.Series();
+        ResultSet rs= absence.getAbsenceByMonth();
+        String Month = new String();
+        try {
+            while (rs.next()) {   
+                switch (rs.getInt(1)) {
+                     case 1:
+                    Month = "janvier";
+                    break;
+                case 2:
+                    Month = "février";
+                    break;
+                case 3:
+                    Month = "mars";
+                    break;
+                case 4:
+                    Month = "avril";
+                    break;
+                case 5:
+                    Month = "mai";
+                    break;
+                case 6:
+                    Month = "juin";
+                    break;
+                case 7:
+                    Month = "juillet";
+                    break;
+                case 8:
+                    Month = "août";
+                    break;
+                case 9:
+                    Month = "septembre";
+                    break;
+                case 10:
+                    Month = "octobre";
+                    break;
+                case 11:
+                    Month = "novembre";
+                    break;
+                case 12:
+                    Month = "décembre";
+                    break;
+                    }
+               chart.getData().add(new XYChart.Data<>(Month , rs.getInt(2)));
+               // System.out.println(Month +" : "+ rs.getInt(2));
+            }
+            AbsenceChart.getData().addAll(chart);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   
+    }
+    
+    void AbsenceChartDSByClasse(int id_classe){
+        AbsenceChart.getData().clear();
+        int id_ABSclasse= Integer.parseInt(ABSComboBox.getSelectionModel().getSelectedItem().toString().split(":")[0]);
+        XYChart.Series chart = new XYChart.Series();
+        ResultSet rs= absence.getAbsenceByMonth(id_ABSclasse);
+        String Month = new String();
+        try {
+            while (rs.next()) {   
+                switch (rs.getInt(1)) {
+                     case 1:
+                    Month = "janvier";
+                    break;
+                case 2:
+                    Month = "février";
+                    break;
+                case 3:
+                    Month = "mars";
+                    break;
+                case 4:
+                    Month = "avril";
+                    break;
+                case 5:
+                    Month = "mai";
+                    break;
+                case 6:
+                    Month = "juin";
+                    break;
+                case 7:
+                    Month = "juillet";
+                    break;
+                case 8:
+                    Month = "août";
+                    break;
+                case 9:
+                    Month = "septembre";
+                    break;
+                case 10:
+                    Month = "octobre";
+                    break;
+                case 11:
+                    Month = "novembre";
+                    break;
+                case 12:
+                    Month = "décembre";
+                    break;
+                    }
+               chart.getData().add(new XYChart.Data<>(Month , rs.getInt(2)));
+                //System.out.println(Month +" : "+ rs.getInt(2));
+            }
+            AbsenceChart.getData().addAll(chart);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   
+    }
+    
     @FXML
     void switchFormStudent(ActionEvent event) {
         if (event.getSource() == addStudent_btn) {
@@ -282,6 +410,7 @@ public class AdminMainFormController implements Initializable {
         Teacher_col_phone.setCellValueFactory(new PropertyValueFactory<>("tele"));
         Teacher_col_specility.setCellValueFactory(new PropertyValueFactory<>("nomSpecialite"));
         Teacher_col_Cycle.setCellValueFactory(new PropertyValueFactory<>("nomCycle"));
+        Teacher_col_photo.setCellValueFactory(new PropertyValueFactory<>("photo"));
         Teacher_tableView.setItems(teachers);
     }
     
@@ -293,6 +422,18 @@ public class AdminMainFormController implements Initializable {
                 items.add(ob.getId_classe()+":"+ob.getClassegenerique().getNiveau().getCode()+" "+ob.getClassegenerique().getFiliere().getCode()+" "+ob.getClassegenerique().getCycle().getCode());
             }
             Classes.setItems(items);
+    }
+    
+    void populateABSclasses(){
+        ABSComboBox.getItems().clear();
+        ObservableList items = FXCollections.observableArrayList();
+        items.add("tous");
+            for (classe ob : cl.getAllClasses()) {
+                //System.out.println(ob.getClassegenerique().getNiveau().getCode()+" "+ob.getClassegenerique().getFiliere().getCode()+" "+ob.getClassegenerique().getCycle().getCode());
+                //ClassMap.put();
+                items.add(ob.getId_classe()+":"+ob.getClassegenerique().getNiveau().getCode()+" "+ob.getClassegenerique().getFiliere().getCode()+" "+ob.getClassegenerique().getCycle().getCode());
+            }
+        ABSComboBox.setItems(items);
     }
     
     void populateStudentTableView(){
@@ -310,7 +451,7 @@ public class AdminMainFormController implements Initializable {
     }
     
     void populateStudentTableViewByClasse(){
-        String selectedClass = Classes.getValue().toString();
+        String selectedClass = Classes.getSelectionModel().getSelectedItem().toString();
         int id_classe = Integer.parseInt(selectedClass.split(":")[0]);
         if(selectedClass != null){
             ObservableList students = etd.getAllStudentsByClasse(id_classe);
@@ -324,9 +465,21 @@ public class AdminMainFormController implements Initializable {
             Student_col_phone.setCellValueFactory(new PropertyValueFactory<>("tele"));
             Student_col_Class.setCellValueFactory(new PropertyValueFactory<>("nomClasse"));
             Student_tableView.setItems(students);
-        } 
-            
-        
+        }
+    }
+    
+    @FXML
+    void populateByABSClass(ActionEvent event) {
+        if(ABSComboBox.getSelectionModel().getSelectedItem().toString().equals("tous")){
+            AbsenceChartDS();
+            return;
+        }
+        String selectedClass = ABSComboBox.getSelectionModel().getSelectedItem().toString();
+        int id_classe = Integer.parseInt(selectedClass.split(":")[0]);
+        if(selectedClass != null && !selectedClass.equals("tous")){
+            AbsenceChart.getData().clear();
+            AbsenceChartDSByClasse(id_classe);
+        }
     }
     
     private String imagePath;
@@ -349,6 +502,10 @@ public class AdminMainFormController implements Initializable {
     @FXML
     void addTeacherAddBtn(ActionEvent event){
        if(event.getSource() == addTeacher_addBtn){
+           if(!formValidate()){
+               alert.errorMessage("Form Invalide");
+               return;
+           }
            String lname=addTeacher_fname.getText();
            String fname=addTeacher_lname.getText();
            String BirthDay= addTeacher_BirthDay.getValue().toString();
@@ -368,7 +525,7 @@ public class AdminMainFormController implements Initializable {
            try {
                int userId = tsh.insert(new user(lname, fname, Email, BirthDay, BirthPlace, Phone, Gender, imagePath));
                 tsh.insert(new enseignant(new user(userId),new cycle(CycleID) , new specialite(specialiteID)));
-                alert.successMessage("The Teacher added successfully");
+                alert.successMessage("L'enseignant est ajoute avec succes");
                 populateTeacherTableView();
            } catch (Exception e) {
                alert.errorMessage(e.getMessage());
@@ -405,8 +562,8 @@ public class AdminMainFormController implements Initializable {
     void ClearCombo(ActionEvent event) {
         if (event.getSource() == ClearComboBox) {
             Classes.getSelectionModel().clearSelection();
-            //Classes.setPromptText("Choose a class...");
             populateStudentTableView();
+            
         }
     }
     
@@ -418,33 +575,28 @@ public class AdminMainFormController implements Initializable {
     }
     
     private boolean isAddStudentWindowOpen = false;
-    
+
     @FXML
-    void addStudentAddBtn() {
-        
-        if (isAddStudentWindowOpen==false) {
+    void addStudentAdd() {
+        if (!isAddStudentWindowOpen) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("AddStudent.fxml"));
                 Parent root = loader.load();
-//                AddStudentController addStudentController = loader.getController();
-//                addStudentController.setAdminMainFormController(this);
-//                Parent root = FXMLLoader.load(getClass().getResource("AddStudent.fxml"));
                 Stage stage = new Stage();
                 stage.setScene(new Scene(root));
                 stage.setTitle("Add Student");
                 stage.show();
-                
+
                 isAddStudentWindowOpen = true;
+
                 stage.setOnHidden(event -> {
                     isAddStudentWindowOpen = false;
                 });
             } catch (Exception e) {
+                e.printStackTrace();
                 alert.errorMessage(e.getMessage());
             }
-            
         }
-        
-        
     }
 
     @FXML
@@ -452,14 +604,14 @@ public class AdminMainFormController implements Initializable {
         if (event.getSource() == Student_deleteBtn){
             etudiant sData = (etudiant) Student_tableView.getSelectionModel().getSelectedItem();
             if (sData == null) {
-                alert.errorMessage("Please select an item first");
+                alert.errorMessage("S'il vous plaît, veuillez d'abord sélectionner un élément.");
                 return;
             }
 //            int num = sData.getId_etudiant();
-            if (alert.confirmMessage("Are you sure you want to Delete Student ID: "+ sData.getNom() + " " +sData.getPrenom()+ "?")) {
+            if (alert.confirmMessage("Êtes-vous sûr de vouloir supprimer l'étudiant ID : "+ sData.getNom() + " " +sData.getPrenom()+ " ?")) {
                 try {
                     if(etd.delete(new user(sData.getNom(), sData.getPrenom(), sData.getEmail(), sData.getDateNais(), sData.getLieuNais(), sData.getTele(), sData.getSexe()))>0){
-                        alert.successMessage("Deleted successfully!");
+                        alert.successMessage("Supprimer avec succes!");
                         populateStudentTableView();
                     }
                 } catch (Exception e) {
@@ -520,9 +672,9 @@ public class AdminMainFormController implements Initializable {
                         while (cellIterator.hasNext()) {
                             String Nom = cellIterator.next().getStringCellValue();
                             String Prenom = cellIterator.next().getStringCellValue();
+                            String  Email= cellIterator.next().getStringCellValue();
                             String DateNais = cellIterator.next().getStringCellValue();
-                            String LieuNais = cellIterator.next().getStringCellValue();
-                            String Email =cellIterator.next().getStringCellValue();
+                            String  LieuNais=cellIterator.next().getStringCellValue();
                             String Sexe = cellIterator.next().getStringCellValue();
                             String Tele =cellIterator.next().getStringCellValue();
                             String Classe=cellIterator.next().getStringCellValue();
@@ -569,7 +721,7 @@ public class AdminMainFormController implements Initializable {
 
 
     @FXML
-    void addTeacherClearBtn(ActionEvent event) {
+    void addTeacherClearBtn() {
         addTeacher_teacherID.clear();
         addTeacher_fname.clear();
         addTeacher_lname.clear();
@@ -605,19 +757,66 @@ public class AdminMainFormController implements Initializable {
     
     @FXML
     void addTeacherUpdateBtn(ActionEvent event) {
-        enseignant tshData = (enseignant) Teacher_tableView.getSelectionModel().getSelectedItem();
-        if (tshData == null) {
-            alert.errorMessage("Please select an item first");
-            return;
-        }
-        FillForm(tshData);
         try {
-            alert.successMessage("The Teahcer added successfully");
+            enseignant tshData = (enseignant) Teacher_tableView.getSelectionModel().getSelectedItem();
+            if (tshData == null) {
+                alert.errorMessage("Please select an item first");
+                return;
+            }
+            int id_user =tsh.getUserByIdTeacher(Integer.parseInt(addTeacher_teacherID.getText())).getId_user();
+            //System.out.println(id_user);
+            String fname=addTeacher_fname.getText();
+            //System.out.println(fname);
+            String lname=addTeacher_lname.getText();
+            //System.out.println(lname);
+            LocalDate selectedDate = addTeacher_BirthDay.getValue();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dateNais= selectedDate.format(formatter);
+            //System.out.println(dateNais);
+            String LieuNais= addTeacher_BirthPlace.getText();
+            //System.out.println(LieuNais);
+            String Email = addTeacher_Email.getText();
+            //System.out.println(Email);
+            String Tele=addTeacher_Phone.getText();
+            //System.out.println(Tele);
+            String gender;
+            if(addTeacher_gender.getSelectionModel().getSelectedItem().equals("Male")){
+                gender = "M";
+            }else{
+                gender = "F";
+            }
+            //System.out.println(gender);
+            Image image = addTeacher_imageView.getImage();
+            String imageP= new String();
+            if (image != null) {
+                imageP = image.getUrl();
+                System.out.println("Image Path: " + imagePath);
+            }
+            tsh.update(new user(id_user, lname, fname, Email, dateNais, LieuNais, Tele, gender, imageP));
+            tsh.update(new enseignant(new user(id_user),new cycle(Integer.parseInt(addTeacher_cycle.getSelectionModel().getSelectedItem().split(":")[0])), new specialite(Integer.parseInt(addTeacher_speciality.getSelectionModel().getSelectedItem().split(":")[0]))));
+            alert.successMessage("The Teacheer updated successfully");
+            addTeacherClearBtn();
+            Teacher_tableView.getItems().clear();
+            populateTeacherTableView();
         } catch (Exception e) {
-            e.printStackTrace();
             alert.errorMessage(e.getMessage());
         }
-        
+    }
+    
+    boolean formValidate() {
+        if (addTeacher_fname.getText().isEmpty() ||
+            addTeacher_lname.getText().isEmpty() ||
+            addTeacher_BirthDay.getValue() == null ||
+            addTeacher_BirthPlace.getText().isEmpty() ||
+            addTeacher_Email.getText().isEmpty() ||
+            addTeacher_Phone.getText().isEmpty() ||
+            addTeacher_imageView.getImage() == null ||
+            addTeacher_gender.getSelectionModel().isEmpty() ||
+            addTeacher_speciality.getSelectionModel().isEmpty() ||
+            addTeacher_cycle.getSelectionModel().isEmpty()) {
+            return false;
+        }
+        return true;
     }
     
     void FillForm(enseignant Data){
@@ -630,7 +829,9 @@ public class AdminMainFormController implements Initializable {
         addTeacher_BirthPlace.setText(Data.getLieuNais());
         addTeacher_Email.setText(Data.getEmail());
         addTeacher_Phone.setText(Data.getTele());
-        //addTeacher_imageView.setImage();
+        System.out.println(Data.getPhoto());
+//        image = new Image(Data.getPhoto(), 100, 113, false, true);
+//        addTeacher_imageView.setImage(image);
         String gender;
         if(Data.getSexe().equals("M")){
             gender = "Male";
@@ -644,8 +845,11 @@ public class AdminMainFormController implements Initializable {
     
     @FXML
     void addTeacherSelectItems(MouseEvent event) {
-        enseignant tshData = (enseignant) Teacher_tableView.getSelectionModel().getSelectedItem();
-        FillForm(tshData);
+        addTeacherClearBtn();
+        if(Teacher_tableView.getSelectionModel().getSelectedItem()!=null){
+            enseignant tshData = (enseignant) Teacher_tableView.getSelectionModel().getSelectedItem();
+            FillForm(tshData);
+        }
     }
 
     
@@ -663,6 +867,8 @@ public class AdminMainFormController implements Initializable {
         dashboard_CL.setText(cl.CountClasses()+"");
         dashboard_TS.setText(etd.CountStudents()+"");
         dashboard_TT.setText(tsh.countAllTeachers()+"");
+        populateABSclasses();
+        AbsenceChartDS();
 //        Teacher_tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 //            if (newSelection != null) {
 //                FillForm((enseignant)newSelection);
@@ -677,13 +883,27 @@ public class AdminMainFormController implements Initializable {
    
 
     
+    @FXML
+    void logoutBtn(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-    
+        try {
+            // Load the inscriptionForm.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Inscription.fxml"));
+            Parent root = loader.load();
 
-    
+            // Hide the current stage
+            stage.hide();
 
-    
-
+            // Create a new stage for the inscription form
+            Stage newStage = new Stage();
+            newStage.setScene(new Scene(root));
+            newStage.setTitle("Inscription Form");
+            newStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     void countAge(ActionEvent event) {
 
