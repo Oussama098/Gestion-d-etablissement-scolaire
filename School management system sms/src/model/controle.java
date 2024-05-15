@@ -31,6 +31,12 @@ public class controle {
         this.observation = observation;
     }
 
+    public controle(int id_controle) {
+        this.id_controle = id_controle;
+    }
+    
+    
+
     public int getId_controle() {
         return id_controle;
     }

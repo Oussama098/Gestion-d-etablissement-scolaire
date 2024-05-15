@@ -1,7 +1,9 @@
 package view;
 
 import db.AbsenceEtudiantController;
+import db.ControleController;
 import db.EtudiantController;
+import db.NotesController;
 import db.SeanceController;
 import db.enseignantController;
 import java.net.URL;
@@ -96,10 +98,10 @@ public class TeacherMainFormController implements Initializable {
     private TableColumn<note, ?> MarkEtudiantExamen;
 
     @FXML
-    private TableColumn<etudiant, ?> MarkEtudiantID;
+    private TableColumn<note, ?> MarkEtudiantID;
 
     @FXML
-    private TableColumn<etudiant, ?> MarkEtudiantNomComplet;
+    private TableColumn<note, ?> MarkEtudiantNomComplet;
 
     @FXML
     private TableColumn<note, ?> MarkEtudiantNoteCC;
@@ -108,13 +110,16 @@ public class TeacherMainFormController implements Initializable {
     private TableColumn<note, ?> MarkEtudiantNoteTP;
     
     @FXML
-    private TableColumn<etudiant, ?> MarkEtudiantClasse;
+    private TableColumn<note, ?> MarkEtudiantClasse;
+    
+    @FXML
+    private ComboBox<?> MarksExams;
 
     @FXML
     private Button MarksBtn;
 
     @FXML
-    private TableView<etudiant> MarksTableView;
+    private TableView<note> MarksTableView;
 
     @FXML
     private TableColumn<?, ?> Students_col_BirthPlace;
@@ -202,8 +207,10 @@ public class TeacherMainFormController implements Initializable {
 
     @FXML
     private Label sexe;
-
     
+    @FXML
+    private Button addMarkbtn;
+
     private enseignantController tsh = new enseignantController();
     
     private SeanceController sc = new SeanceController();
@@ -217,6 +224,10 @@ public class TeacherMainFormController implements Initializable {
     private EtudiantController etd = new EtudiantController();
     
     private AbsenceEtudiantController absence = new AbsenceEtudiantController();
+    
+    private NotesController note = new NotesController();
+    
+    private ControleController controle = new ControleController();
     
     @FXML
     void ClearBtn(ActionEvent event) {
@@ -277,18 +288,24 @@ public class TeacherMainFormController implements Initializable {
             Classes_Form.setVisible(false);
             TeacherDATA.setVisible(false);
             populateComboBoxByClasses(MarksClasses);
-            populateMarksTableView();
+            FillExamsCB();
+            enableField(true);
+
         }
         
     }
     
     void populateComboBoxByClasses(ComboBox cb){
         ObservableList items = FXCollections.observableArrayList();
+        if(cb.getSelectionModel()!=null){
             for (seance ob : seance) {
                 //ClassMap.put(ob.getSeancegenerique().getClasse().getId_classe(), ob.getSeancegenerique().getClasse().getClassegenerique().getCycle().getCode()+" "+ob.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" " + ob.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode());
                 items.add(ob.getSeancegenerique().getClasse().getId_classe()+":"+ob.getSeancegenerique().getClasse().getClassegenerique().getCycle().getCode()+" "+ob.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" " + ob.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode());
             }
-        cb.setItems(items);
+            cb.setItems(items);
+        }else{
+            MarksTableView.getSelectionModel().getSelectedItems().clear();
+        }
     }
     
 //    @FXML
@@ -407,6 +424,17 @@ public class TeacherMainFormController implements Initializable {
         }
     }
     
+    void FillExamsCB(){
+        ObservableList items = FXCollections.observableArrayList();
+        for (controle item : controle.getAllExamsByTeacher(teacher.getId_enseignant())) {
+            items.add(item.getId_controle() + ":"+ item.getNom());
+        }
+        
+        //System.out.println(items);
+        MarksExams.setItems(items);
+        
+    }
+    
     @FXML
     void subjectHandleAddBtn(ActionEvent event) {
 
@@ -462,7 +490,7 @@ public class TeacherMainFormController implements Initializable {
     void AbsenceAddBtn(ActionEvent event) {
         ObservableList<etudiant> selectedStudents = FXCollections.observableArrayList();
         for (etudiant etudiant : Abcense_tableView.getItems()) {
-            if (etudiant.getSelect().isSelected() &&comboSeanceByClass.getSelectionModel().getSelectedItem()!=null) {
+            if (etudiant.getSelect().isSelected() && comboSeanceByClass.getSelectionModel().getSelectedItem()!=null) {
                 selectedStudents.add(etudiant);
                 int id_etudiant = etudiant.getId_etudiant();
                 int id_seance= Integer.parseInt(comboSeanceByClass.getSelectionModel().getSelectedItem().toString().split(":")[0]);
@@ -483,25 +511,109 @@ public class TeacherMainFormController implements Initializable {
         
     }
     
-    void populateMarksTableView(){
-        ObservableList ListEtudiant = tsh.getAllStudentsByTeacher(InscriptionController.autoDATA.getUser().getId_user());
-        MarkEtudiantID.setCellValueFactory(new PropertyValueFactory<>("id_etudiant"));
-        MarkEtudiantNomComplet.setCellValueFactory(new PropertyValueFactory<>("nomComplet"));
-        MarkEtudiantClasse.setCellValueFactory(new PropertyValueFactory<>("nomClasse"));
-//        MarkEtudiantNoteCC.setCellValueFactory(new PropertyValueFactory<>("noteCC"));
-//        MarkEtudiantNoteTP.setCellValueFactory(new PropertyValueFactory<>("noteTP"));
-//        MarkEtudiantExamen.setCellValueFactory(new PropertyValueFactory<>("noteExamen"));
-        MarksTableView.setItems(ListEtudiant);
-    }
+//    void populateMarksTableView(){
+//        
+//    }
     
     
     @FXML
     void MarksSelectItem(MouseEvent event) {
-        etudiant etudiant = MarksTableView.getSelectionModel().getSelectedItem();
-        if(etudiant!=null){
-            AddMarkEtudiantID.setText(etudiant.getId_etudiant()+"");
+        note note = MarksTableView.getSelectionModel().getSelectedItem();
+        if(note == null){
+            enableField(true);
+        }else{
+            enableField(false);
+            AddMarkEtudiantID.setText(note.getId_etudiant()+"");
+            AddMarkNoteCC.setText(note.getNoteCC()+"");
+            AddMarkNoteTP.setText(note.getNoteTP()+"");
+            AddMarkNoteExamen.setText(note.getNoteExamen()+"");
         }
     }
+    
+    @FXML
+    void populateMarksTableViewByClass() {
+        int id_classe = Integer.parseInt(MarksClasses.getSelectionModel().getSelectedItem().toString().split(":")[0]);
+        if(MarksClasses.getSelectionModel().getSelectedItem() !=null){
+            ObservableList ListEtudiant = note.getStudentsMarksByTeacherAndClass(id_classe);
+            MarkEtudiantID.setCellValueFactory(new PropertyValueFactory<>("id_etudiant"));
+            MarkEtudiantNomComplet.setCellValueFactory(new PropertyValueFactory<>("nomComplet"));
+            MarkEtudiantClasse.setCellValueFactory(new PropertyValueFactory<>("nomClasse"));
+            MarkEtudiantNoteCC.setCellValueFactory(new PropertyValueFactory<>("noteCC"));
+            MarkEtudiantNoteTP.setCellValueFactory(new PropertyValueFactory<>("noteTP"));
+            MarkEtudiantExamen.setCellValueFactory(new PropertyValueFactory<>("noteExamen"));
+            MarksTableView.setItems(ListEtudiant);
+        }
+    }
+    
+//    void populateMarksTableViewByClassAndExam() {
+//        int id_classe = Integer.parseInt(MarksClasses.getSelectionModel().getSelectedItem().toString().split(":")[0]);
+//        //int id_controle = Integer.parseInt(MarksExams.getSelectionModel().getSelectedItem().toString().split(":")[0]);
+//        if(MarksClasses.getSelectionModel().getSelectedItem() !=null && MarksExams.getSelectionModel().getSelectedItem() !=null){
+//            ObservableList ListEtudiant = note.getStudentsMarksByTeacherAndClass(id_classe );
+//            MarkEtudiantID.setCellValueFactory(new PropertyValueFactory<>("id_etudiant"));
+//            MarkEtudiantNomComplet.setCellValueFactory(new PropertyValueFactory<>("nomComplet"));
+//            MarkEtudiantClasse.setCellValueFactory(new PropertyValueFactory<>("nomClasse"));
+//            MarkEtudiantNoteCC.setCellValueFactory(new PropertyValueFactory<>("noteCC"));
+//            MarkEtudiantNoteTP.setCellValueFactory(new PropertyValueFactory<>("noteTP"));
+//            MarkEtudiantExamen.setCellValueFactory(new PropertyValueFactory<>("noteExamen"));
+//            MarksTableView.setItems(ListEtudiant);
+//        }
+//    }
+    
+    
+    
+    @FXML
+    void MarksAddBtn(ActionEvent event) {
+        if(!FormValid()){
+            alert.errorMessage("il faut remplir tous les champs");
+            return;
+        }
+        float NoteCC = Float.parseFloat(AddMarkNoteCC.getText());
+        float NoteTP = Float.parseFloat(AddMarkNoteTP.getText());
+        float Examen = Float.parseFloat(AddMarkNoteExamen.getText());
+        int id_controle = Integer.parseInt(MarksExams.getSelectionModel().getSelectedItem().toString().split(":")[0]);
+        int id_etudiant = Integer.parseInt(AddMarkEtudiantID.getText());
+        try {
+            note note = new note(0, new etudiant(id_etudiant), new controle(id_controle), NoteCC, NoteTP, Examen, null, "", "");
+            if(this.note.ExistMarksEtudiant(id_etudiant)){
+                this.note.update(note);
+            }else{
+                this.note.insert(note);
+            }
+        alert.successMessage("Les notes sont enregistrees aves succes");
+        clearFields();
+        populateMarksTableViewByClass();
+        } catch (Exception e) {
+            e.printStackTrace();
+            alert.errorMessage("Error d'enregistrement");
+        }
+
+    }
+    
+    
+    boolean FormValid(){
+        if(MarksTableView.getSelectionModel().isEmpty() && AddMarkNoteCC.getText().equals("") && AddMarkNoteTP.getText().equals("") && AddMarkNoteExamen.getText().equals("") && MarksExams.getSelectionModel().getSelectedItem() == null){
+            return false;
+        }
+        return true;
+    }
+    
+    void enableField(boolean bool){
+        AddMarkNoteCC.setDisable(bool);
+        AddMarkNoteTP.setDisable(bool);
+        AddMarkNoteExamen.setDisable(bool);
+        MarksExams.setDisable(bool);
+        addMarkbtn.setDisable(bool);
+    }
+    
+    void clearFields(){
+        AddMarkEtudiantID.setText("");
+        AddMarkNoteCC.setText("");
+        AddMarkNoteTP.setText("");
+        AddMarkNoteExamen.setText("");
+        MarksExams.getSelectionModel().clearSelection();
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         TeacherDATA.setVisible(true);
@@ -527,6 +639,9 @@ public class TeacherMainFormController implements Initializable {
         
         comboSeanceByClass.setOnAction(event -> FillAbsenceTableView());
 
+//        MarksClasses.setOnAction(event -> FillExamsCB());
+//        
+//        MarksExams.setOnAction(event -> populateMarksTableViewByClassAndExam());
             
             
     }

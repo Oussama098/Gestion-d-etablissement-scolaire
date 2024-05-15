@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import db.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileInputStream;
 import java.net.URL;
@@ -39,7 +40,7 @@ import model.classe;
 import model.enseignant;
 import model.etudiant;
 import model.filiere;
-import model.seance;
+import model.*;
 import model.user;
 import org.apache.poi.ss.usermodel.*;
 import java.util.Iterator;
@@ -48,14 +49,30 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.image.Image;
 import model.cycle;
 import model.specialite;
+import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import static org.apache.poi.hssf.usermodel.HeaderFooter.fontSize;
 
 public class AdminMainFormController implements Initializable {
     
     @FXML
     private ComboBox<?> ABSComboBox;
-
+    
+    @FXML
+    private ComboBox<String> AbsenceClasses;
+    
     @FXML
     private BarChart<String, Number> AbsenceChart;
+    
+    @FXML
+    private Button Absencebtn;
+    
+    @FXML
+    private AnchorPane AbsenceForm;
     
     @FXML
     private CategoryAxis Months;
@@ -66,6 +83,26 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private ComboBox<?> Classes;
 
+     @FXML
+    private TableColumn<?, ?> AbsenceStudentCheck;
+
+    @FXML
+    private TableColumn<?, ?> AbsenceStudentClass;
+
+    @FXML
+    private TableColumn<?, ?> AbsenceStudentFullName;
+
+    @FXML
+    private TableColumn<?, ?> AbsenceStudentID;
+
+    @FXML
+    private TableColumn<?, ?> AbsenceStudentAbsCount;
+    
+    @FXML
+    private Button GenratePDF;
+    
+    @FXML
+    private TableView<absenceetudiant> AbcenseTableView;
     @FXML
     private Button ClearComboBox;
 
@@ -228,6 +265,12 @@ public class AdminMainFormController implements Initializable {
     @FXML
     private Button logout_btn;
     
+    @FXML
+    private ComboBox<?> CBMarksClass;
+    
+    @FXML
+    private PieChart MarksChart;
+    
     private Image image;
     
     private EtudiantController etd = new EtudiantController();
@@ -252,6 +295,8 @@ public class AdminMainFormController implements Initializable {
     
     static etudiant etudiant;
     
+    NotesController note = new NotesController();
+    
     private AlertMessage alert = new AlertMessage();
 
     @FXML
@@ -261,20 +306,32 @@ public class AdminMainFormController implements Initializable {
             dashboard_CL.setText(cl.CountClasses()+"");
             dashboard_TS.setText(etd.CountStudents()+"");
             dashboard_TT.setText(tsh.countAllTeachers()+"");
-            populateABSclasses();
+            populateABSclasses(ABSComboBox);
+            populateABSclasses(CBMarksClass);
             AbsenceChartDS();
+            MarksChart();
             addStudent_form.setVisible(false);
             addTeacher_form.setVisible(false);
+            AbsenceForm.setVisible(false);
         }
         if (event.getSource() == addTeacher_btn) {
             dashboard_form.setVisible(false);
             addStudent_form.setVisible(false);
             addTeacher_form.setVisible(true);
+            AbsenceForm.setVisible(false);
             populateTeacherTableView();
             populateCBGender();
             populateCBSpeciality();
             populateCBCycle();
             addTeacherClearBtn();
+        }
+        if(event.getSource() == Absencebtn){
+            AbsenceForm.setVisible(true);
+            dashboard_form.setVisible(false);
+            addStudent_form.setVisible(false);
+            addTeacher_form.setVisible(false);
+            populateABSclasses(AbsenceClasses);
+            populateAbsenceTableView();
         }
     }
 
@@ -331,6 +388,134 @@ public class AdminMainFormController implements Initializable {
             e.printStackTrace();
         }   
     }
+    
+    @FXML
+    void GeneratePDFbtn(ActionEvent event) {
+        ObservableList<absenceetudiant> selectedStudents = FXCollections.observableArrayList();
+        for (absenceetudiant etudiant : AbcenseTableView.getItems()) {
+            if (etudiant.getSelect().isSelected()) {
+                selectedStudents.add(etudiant);
+                String nomComplet = etudiant.getNomComplet();
+                try (PDDocument document = new PDDocument()) {
+                    PDPage page = new PDPage(PDRectangle.A4);
+                    document.addPage(page);
+
+                    PDFont font = PDType1Font.HELVETICA;
+
+                    try (PDPageContentStream contentStream = new PDPageContentStream(document, page, AppendMode.APPEND, true)) {
+                        File file = new File("C:/Users/oussa/OneDrive/Bureau/ministre.jpg");
+                        PDImageXObject image = PDImageXObject.createFromFileByContent(file, document);
+                        contentStream.drawImage(image, 50, 750, 500, 100);
+
+                        contentStream.beginText();
+                        contentStream.setFont(font, 12);
+
+                        // Adjust the starting coordinates for A4
+                        contentStream.newLineAtOffset(72, 750);
+
+                        PDFont pdfFont = PDType1Font.HELVETICA;
+                        float fontSize = 12;
+                        float leading = 1.5f * fontSize;
+
+                        PDRectangle mediabox = page.getMediaBox();
+                        float margin = 72;
+                        float width = mediabox.getWidth() - 2 * margin;
+
+                        String greeting = "Bonjour "+nomComplet+",";
+
+                        String paragraph1 = "Nous tenons à vous rappeler que votre nombre d'heures d'absence a atteint 10 heures.";
+                        String paragraph2 = "Nous vous demandons de respecter les horaires prévus selon votre emploi du temps";
+                        String paragraph3 = "afin d'éviter d'éventuels problèmes académiques. Veuillez nous contacter en cas de ";
+                        String paragraph4 = "circonstances particulières nécessitant un changement dans votre situation académique.";
+                        String paragraph5 = "Nous tenons également à vous informer qu'en cas d'atteinte de 15 heures d'absence, nous";
+                        String paragraph6 = "serons amenés à rédiger un rapport qui sera envoyé à votre famille.";
+                        String paragraph7 = "Nous vous remercions pour votre compréhension et votre coopération.";
+                        String paragraph8 = "                                                                                           Signature:";
+
+
+                        List<String> lines = new ArrayList<String>();
+                        lines.add("");
+                        lines.add("");
+                        lines.add("");
+                        lines.add("");
+                        lines.add(greeting);
+                        lines.add("");
+                        lines.add("");
+                        lines.add("");
+                        lines.add(paragraph1);
+                        lines.add("");
+                        lines.add(paragraph2);
+                        lines.add("");
+                        lines.add(paragraph3);
+                        lines.add("");
+                        lines.add(paragraph4);
+                        lines.add("");
+                        lines.add(paragraph5);
+                        lines.add("");
+                        lines.add(paragraph6);
+                        lines.add("");
+                        lines.add(paragraph7);
+                        lines.add("");
+                        lines.add("");
+                        lines.add("");
+                        lines.add("");
+                        lines.add(paragraph8);
+
+                        for (String line : lines) {
+                            contentStream.showText(line);
+                            contentStream.newLineAtOffset(0, -leading);
+                        }
+
+                        contentStream.endText();
+                        contentStream.close();
+                    }
+
+                    document.save("C:/Users/oussa/OneDrive/Bureau/"+nomComplet+".pdf");
+//                    File file = new File("C:/Users/oussa/OneDrive/Bureau/HelloWorldWithImage.pdf");
+//                    Desktop.getDesktop().open(file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    alert.errorMessage("erreur");
+                    return;
+                }
+            }
+        }
+        alert.successMessage("Succes");
+    
+    }
+    
+    void MarksChart(){
+        try {
+            ResultSet rs = note.getMarksStudents();
+            ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
+            if(rs.next()) {                
+                pieData.add(new PieChart.Data("> la moyenne" , rs.getInt(1)));
+                pieData.add(new PieChart.Data("< la moyenne" , rs.getInt(2)));
+                pieData.add(new PieChart.Data("= moyenne" , rs.getInt(3)));
+            }
+        MarksChart.setData(pieData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    void MarksChartByClasse(int id_classe){
+        try {
+            ResultSet rs = note.getMarksStudentsByClasse(id_classe);
+            ObservableList<PieChart.Data> pieData = FXCollections.observableArrayList();
+            if(rs.next()) {                
+                pieData.add(new PieChart.Data("> la moyenne" , rs.getInt(1)));
+                pieData.add(new PieChart.Data("< la moyenne" , rs.getInt(2)));
+                pieData.add(new PieChart.Data("= moyenne" , rs.getInt(3)));
+            }
+        MarksChart.setData(pieData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+    }
+    
+    
     
     void AbsenceChartDSByClasse(int id_classe){
         AbsenceChart.getData().clear();
@@ -424,8 +609,8 @@ public class AdminMainFormController implements Initializable {
             Classes.setItems(items);
     }
     
-    void populateABSclasses(){
-        ABSComboBox.getItems().clear();
+    void populateABSclasses(ComboBox cb){
+        cb.getItems().clear();
         ObservableList items = FXCollections.observableArrayList();
         items.add("tous");
             for (classe ob : cl.getAllClasses()) {
@@ -433,8 +618,23 @@ public class AdminMainFormController implements Initializable {
                 //ClassMap.put();
                 items.add(ob.getId_classe()+":"+ob.getClassegenerique().getNiveau().getCode()+" "+ob.getClassegenerique().getFiliere().getCode()+" "+ob.getClassegenerique().getCycle().getCode());
             }
-        ABSComboBox.setItems(items);
+        cb.setItems(items);
     }
+    
+    void populateAbsenceTableView(){
+//        int id_classe = Integer.parseInt(AbsenceClasses.getSelectionModel().getSelectedItem().split(":")[0]);
+//        System.out.println(id_classe);
+//        if(AbsenceClasses.getSelectionModel().getSelectedItem()!= null ){
+            AbsenceStudentID.setCellValueFactory(new PropertyValueFactory<>("id_etudiant"));
+            AbsenceStudentFullName.setCellValueFactory(new PropertyValueFactory<>("nomComplet"));
+            AbsenceStudentAbsCount.setCellValueFactory(new PropertyValueFactory<>("NbrAbs"));
+            AbsenceStudentClass.setCellValueFactory(new PropertyValueFactory<>("nomClasse"));
+            AbsenceStudentCheck.setCellValueFactory(new PropertyValueFactory<>("select"));
+            AbcenseTableView.setItems(absence.CountAbsenceOfEachStudent(1));
+//        }
+        
+    }
+    
     
     void populateStudentTableView(){
         ObservableList students = etd.getAllStudents();
@@ -482,6 +682,19 @@ public class AdminMainFormController implements Initializable {
         }
     }
     
+    @FXML
+    void populateMarksByClasses(ActionEvent event) {
+        if(CBMarksClass.getSelectionModel().getSelectedItem().toString().equals("tous")){
+            MarksChart();
+            return;
+        }
+        String selectedClass = CBMarksClass.getSelectionModel().getSelectedItem().toString();
+        int id_classe = Integer.parseInt(selectedClass.split(":")[0]);
+        if(selectedClass != null && !selectedClass.equals("tous")){
+            MarksChart.getData().clear();
+            MarksChartByClasse(id_classe);
+        }
+    }
     private String imagePath;
     @FXML
     void addTeacherImportBtn(ActionEvent event) {
@@ -864,11 +1077,14 @@ public class AdminMainFormController implements Initializable {
         addStudent_form.setVisible(false);
         addTeacher_form.setVisible(false);
         dashboard_form.setVisible(true);
+        AbsenceForm.setVisible(false);
         dashboard_CL.setText(cl.CountClasses()+"");
         dashboard_TS.setText(etd.CountStudents()+"");
         dashboard_TT.setText(tsh.countAllTeachers()+"");
-        populateABSclasses();
+        populateABSclasses(ABSComboBox);
+        populateABSclasses(CBMarksClass);
         AbsenceChartDS();
+        MarksChart();
 //        Teacher_tableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
 //            if (newSelection != null) {
 //                FillForm((enseignant)newSelection);

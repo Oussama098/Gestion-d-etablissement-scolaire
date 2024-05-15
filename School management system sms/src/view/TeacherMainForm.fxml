@@ -20,16 +20,16 @@
          <children>
             <BorderPane layoutX="239.0" layoutY="194.0" prefHeight="600.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <left>
-                  <AnchorPane prefHeight="600.0" prefWidth="217.0" styleClass="main-bg" stylesheets="@../css/MainForm.css" BorderPane.alignment="CENTER">
+                  <AnchorPane prefHeight="577.0" prefWidth="209.0" styleClass="main-bg" stylesheets="@../css/MainForm.css" BorderPane.alignment="CENTER">
                      <children>
-                        <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="85.0" layoutY="75.0" size="5em" />
-                        <Label fx:id="greet_name" layoutX="63.0" layoutY="93.0" text="Welcome, Teacher" textFill="WHITE">
+                        <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="80.0" layoutY="75.0" size="5em" />
+                        <Label fx:id="greet_name" layoutX="42.0" layoutY="93.0" text="Bienvenue Enseignant" textFill="WHITE">
                            <font>
                               <Font size="13.0" />
                            </font>
                         </Label>
-                        <Button fx:id="TshDataBTN" layoutX="9.0" layoutY="181.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Mes Informations" />
-                        <Button fx:id="Classes_btn" layoutX="9.0" layoutY="249.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Mes Classes" />
+                        <Button fx:id="TshDataBTN" layoutX="5.0" layoutY="181.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Mes Informations" />
+                        <Button fx:id="Classes_btn" layoutX="6.0" layoutY="249.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Mes Classes" />
                         <Button fx:id="logout_btn" layoutX="9.0" layoutY="516.0" mnemonicParsing="false" onAction="#logoutBtn" styleClass="nav-btn" stylesheets="@../css/MainForm.css">
                            <graphic>
                               <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="2em" />
@@ -40,8 +40,8 @@
                               <Font size="14.0" />
                            </font>
                         </Label>
-                        <Button fx:id="Absence_btn" layoutX="9.0" layoutY="321.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Absence" />
-                        <Button fx:id="MarksBtn" layoutX="9.0" layoutY="389.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Notes" />
+                        <Button fx:id="Absence_btn" layoutX="6.0" layoutY="321.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Absence" />
+                        <Button fx:id="MarksBtn" layoutX="6.0" layoutY="389.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Notes" />
                      </children>
                   </AnchorPane>
                </left>
@@ -52,7 +52,7 @@
                         <String fx:value="shadow" />
                      </styleClass>
                      <children>
-                        <Label fx:id="current_form" layoutX="14.0" layoutY="9.0" text="Enseignant Form" textFill="WHITE">
+                        <Label fx:id="current_form" layoutX="17.0" layoutY="15.0" text="Enseignant Form" textFill="WHITE">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -206,7 +206,7 @@
                               <Button fx:id="clearBtn1" layoutX="710.0" layoutY="44.0" mnemonicParsing="false" onAction="#ClearCBClassesAB" prefHeight="36.0" prefWidth="97.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Clear" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="AddMarksForm" layoutX="10.0" layoutY="10.0" prefHeight="567.0" prefWidth="883.0">
+                        <AnchorPane fx:id="AddMarksForm" layoutX="10.0" layoutY="10.0" prefHeight="567.0" prefWidth="883.0" visible="false">
                            <children>
                               <AnchorPane layoutX="-4.0" layoutY="-4.666666666666667" prefHeight="401.0" prefWidth="876.0" stylesheets="@../css/MainForm.css" AnchorPane.bottomAnchor="171.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="-5.0">
                                  <styleClass>
@@ -228,8 +228,8 @@
                                           <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                        </columnResizePolicy>
                                     </TableView>
-                                    <ComboBox fx:id="MarksClasses" layoutX="420.0" layoutY="25.0" prefHeight="25.0" prefWidth="206.0" promptText="Choisir une classe..." visibleRowCount="3" />
-                                    <Label layoutX="330.0" layoutY="29.0" text="Les Classes :" />
+                                    <ComboBox fx:id="MarksClasses" layoutX="353.0" layoutY="25.0" onAction="#populateMarksTableViewByClass" prefHeight="25.0" prefWidth="206.0" promptText="Choisir une classe..." visibleRowCount="3" />
+                                    <Label layoutX="254.0" layoutY="29.0" text="Les Classes :" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="-5.0" layoutY="408.0" prefHeight="141.0" prefWidth="874.0" stylesheets="@../css/MainForm.css">
@@ -239,14 +239,16 @@
                                     <String fx:value="radius" />
                                  </styleClass>
                                  <children>
-                                    <Label layoutX="55.0" layoutY="54.0" text="Note CC:" />
-                                    <TextField fx:id="AddMarkNoteCC" layoutX="112.0" layoutY="50.0" />
-                                    <Label layoutX="291.0" layoutY="54.0" text="Note TP:" />
-                                    <TextField fx:id="AddMarkNoteTP" layoutX="348.0" layoutY="50.0" />
-                                    <Label layoutX="542.0" layoutY="54.0" text="Note Examen:" />
-                                    <TextField fx:id="AddMarkNoteExamen" layoutX="627.0" layoutY="50.0" />
-                                    <Label layoutX="276.0" layoutY="15.0" text="Etudiant ID:" />
-                                    <TextField fx:id="AddMarkEtudiantID" layoutX="347.0" layoutY="11.0" />
+                                    <Label layoutX="23.0" layoutY="40.0" text="Note CC:" />
+                                    <TextField fx:id="AddMarkNoteCC" layoutX="80.0" layoutY="36.0" prefHeight="25.0" prefWidth="113.0" />
+                                    <Label layoutX="225.0" layoutY="40.0" text="Note TP:" />
+                                    <TextField fx:id="AddMarkNoteTP" layoutX="281.0" layoutY="36.0" prefHeight="25.0" prefWidth="110.0" />
+                                    <Label layoutX="416.0" layoutY="40.0" text="Note Examen:" />
+                                    <TextField fx:id="AddMarkNoteExamen" layoutX="501.0" layoutY="36.0" prefHeight="25.0" prefWidth="113.0" />
+                                    <Label layoutX="276.0" layoutY="15.0" text="Etudiant ID:" visible="false" />
+                                    <TextField fx:id="AddMarkEtudiantID" layoutX="347.0" layoutY="11.0" visible="false" />
+                                    <Button fx:id="addMarkbtn" layoutX="348.0" layoutY="91.0" mnemonicParsing="false" onAction="#MarksAddBtn" prefHeight="36.0" prefWidth="147.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Enregistrer" />
+                                    <ComboBox fx:id="MarksExams" layoutX="667.0" layoutY="36.0" prefHeight="25.0" prefWidth="154.0" promptText="Choisir un Controle..." visibleRowCount="3" />
                                  </children>
                               </AnchorPane>
                            </children>

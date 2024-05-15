@@ -114,6 +114,10 @@ public class etudiant {
     public String getEmail(){
         return User.getEmail();
     }
+
+    public void setClasse(classe classe) {
+        this.classe = classe;
+    }
     
     public String getSexe(){
         return User.getSexe();

@@ -18,9 +18,10 @@ public class note {
     private float noteTP;
     private float noteExamen;
     private Date date;
+    private String etat;
     private String observation;
 
-    public note(int id_note, etudiant etudiant, controle controle, float noteCC, float noteTP, float noteExamen, Date date, String observation) {
+    public note(int id_note, etudiant etudiant, controle controle, float noteCC, float noteTP, float noteExamen, Date date, String etat ,String observation) {
         this.id_note = id_note;
         this.etudiant = etudiant;
         this.controle = controle;
@@ -28,6 +29,7 @@ public class note {
         this.noteTP = noteTP;
         this.noteExamen = noteExamen;
         this.date = date;
+        this.etat= etat;
         this.observation = observation;
     }
 
@@ -67,6 +69,14 @@ public class note {
         return noteTP;
     }
 
+    public String getEtat() {
+        return etat;
+    }
+
+    public void setEtat(String etat) {
+        this.etat = etat;
+    }
+
     public void setNoteTP(float noteTP) {
         this.noteTP = noteTP;
     }
@@ -78,7 +88,14 @@ public class note {
     public void setNoteExamen(float noteExamen) {
         this.noteExamen = noteExamen;
     }
-
+    
+    public String getMatiere(){
+        return controle.getModule().getNom()+" : "+controle.getMatiere().getNom();
+    }
+    
+    public String getModule(){
+        return controle.getModule().getNom();
+    }
     public Date getDate() {
         return date;
     }
@@ -105,11 +122,16 @@ public class note {
         return etudiant.getUser().getNom()+" "+etudiant.getUser().getPrenom();
     }
     
+    public String getNomClasse(){
+        return etudiant.getNomClasse();
+    }
 
     @Override
     public String toString() {
-        return "notes{" + "id_note=" + id_note + ", etudiant=" + etudiant + ", controle=" + controle + ", noteCC=" + noteCC + ", noteTP=" + noteTP + ", noteExamen=" + noteExamen + ", date=" + date + ",  observation=" + observation + '}';
+        return "note{" + "id_note=" + id_note + ", etudiant=" + etudiant + ", controle=" + controle + ", noteCC=" + noteCC + ", noteTP=" + noteTP + ", noteExamen=" + noteExamen + ", date=" + date + ", etat=" + etat + ", observation=" + observation + '}';
     }
+    
+    
 
     
     

@@ -70,20 +70,12 @@ public class InscriptionController implements Initializable{
                     }
                 }
             }
-            
-                
-            
-            
-                
-            
-            
             }
     
         } catch (Exception e) {
-          e.printStackTrace();
           alert.errorMessage(e.getMessage());
         }
-        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {

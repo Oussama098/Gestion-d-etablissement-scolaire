@@ -3,6 +3,7 @@ package view;
 import db.AbsenceEtudiantController;
 import db.DocJustifAbsEtudiantController;
 import db.EtudiantController;
+import db.NotesController;
 import db.SeanceController;
 import java.io.File;
 import java.net.URL;
@@ -137,6 +138,25 @@ public class StudentMainFormController implements Initializable{
     @FXML
     private Label subjectDATA;
     
+     @FXML
+    private TableColumn<?, ?> MarksMatiere;
+
+    @FXML
+    private TableColumn<?, ?> MarksNoteCC;
+
+    @FXML
+    private TableColumn<?, ?> MarksNoteExamen;
+
+    @FXML
+    private TableColumn<?, ?> MarksNoteTP;
+
+    @FXML
+    private TableView<?> MarksTableView;
+    
+    
+    @FXML
+    private AnchorPane MarksForm;
+    
     SeanceController SC = new SeanceController();
     
     ArrayList<seance> seance =SC.getSessionDataByStudent(InscriptionController.autoDATA.getUser().getId_user());
@@ -147,10 +167,13 @@ public class StudentMainFormController implements Initializable{
     
     AlertMessage alert = new AlertMessage();
     
+    NotesController note = new NotesController();
+    
     public void switchForm(ActionEvent event){
-        if(event.getSource()== student_Abcence){
+        if(event.getSource()== studentInformation_btn){
             StudentDATA.setVisible(true);
             student_Abcence.setVisible(false);
+            MarksForm.setVisible(false);
             Student_ID.setText(InscriptionController.autoDATA.getUser().getId_user()+"");
             FullName.setText(InscriptionController.autoDATA.getUser().getPrenom()+" "+ InscriptionController.autoDATA.getUser().getNom());
             birthplace.setText(InscriptionController.autoDATA.getUser().getLieuNais());
@@ -168,9 +191,16 @@ public class StudentMainFormController implements Initializable{
                 subjectDATA.setText( sc.getSeancegenerique().getModule().getNom()+" : "+sc.getSeancegenerique().getMatiere().getNom()+ "( "+ sc.getSeancegenerique().getJour()+ " ["+sc.getSeancegenerique().getDatedeb()+" , "+sc.getSeancegenerique().getDatefin()+"] )");
             }
         }
+        if(event.getSource()==student_MarksBtn){
+            MarksForm.setVisible(true);
+            student_Abcence.setVisible(false);
+            StudentDATA.setVisible(false);
+            populateMarksTableView();
+        }
         if(event.getSource()==student_AbsenceBtn){
             student_Abcence.setVisible(true);
             StudentDATA.setVisible(false);
+            MarksForm.setVisible(false);
             populateTypeJustDoc();
             populateAbsence_tableView();
         } 
@@ -299,10 +329,19 @@ public class StudentMainFormController implements Initializable{
 
     }
 
+    void populateMarksTableView(){
+        ObservableList items = note.getMarksForEachStudent(InscriptionController.autoDATA.getUser().getId_user());
+        MarksMatiere.setCellValueFactory(new PropertyValueFactory<>("matiere"));
+        MarksNoteCC.setCellValueFactory(new PropertyValueFactory<>("noteCC"));
+        MarksNoteTP.setCellValueFactory(new PropertyValueFactory<>("noteTP"));
+        MarksNoteExamen.setCellValueFactory(new PropertyValueFactory<>("noteExamen"));
+        MarksTableView.setItems(items);
+    }
     @Override
     public void initialize(URL url, ResourceBundle rb) {
             StudentDATA.setVisible(true);
             student_Abcence.setVisible(false);
+            MarksForm.setVisible(false);
             Student_ID.setText(InscriptionController.autoDATA.getUser().getId_user()+"");
             FullName.setText(InscriptionController.autoDATA.getUser().getPrenom()+" "+ InscriptionController.autoDATA.getUser().getNom());
             birthplace.setText(InscriptionController.autoDATA.getUser().getLieuNais());
