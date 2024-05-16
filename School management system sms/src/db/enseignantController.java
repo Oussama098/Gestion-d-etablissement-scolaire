@@ -240,6 +240,8 @@ public class enseignantController {
 
     }
     
+        
+        
     public ObservableList getAllStudentsByTeacherAndClasse(int id_Teacher , int id_Classe){
         ObservableList<etudiant> List = FXCollections.observableArrayList();
         try {
@@ -416,7 +418,8 @@ public class enseignantController {
 //            String gender="M";
 //        tsh.update(new user(id_user, lname, fname, Email, dateNais, LieuNais, Tele, gender, ""));
 //        tsh.update(new enseignant(new user(id_user), new cycle(3), new specialite(1)));
-        System.out.println(tsh.getAllStudentsByTeacherAndClasse(3, 2));
+//        System.out.println(tsh.getAllStudentsByTeacherAndClasse(3, 2));
+        System.out.println(tsh.getUserByIdTeacher(1));
 
     }
 }

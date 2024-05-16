@@ -17,10 +17,10 @@ public class AccueilController {
     private Button GotoCnx;
 
     @FXML
-    private AnchorPane accueilForm;
+    private Button accueilBtn;
 
     @FXML
-    private AnchorPane inscrirForm;
+    private AnchorPane accueilForm;
 
     @FXML
     void goToInscription(ActionEvent event) throws IOException{
@@ -35,6 +35,28 @@ public class AccueilController {
             JOptionPane.showMessageDialog(null, e);
         }     
     }
+    
+
+
+    @FXML
+    void switchForm(ActionEvent event) {
+        if(event.getSource()==accueilBtn){
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("DataGeneral.fxml"));
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Accueil Form");
+                accueilBtn.getScene().getWindow().hide();
+            stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+        }
+    }
+    
+    
     
     
 

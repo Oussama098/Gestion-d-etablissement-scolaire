@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="618.0" prefWidth="943.0" style="-fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.DataGeneralController">
+   <children>
+      <Pane prefHeight="173.0" prefWidth="980.0" style="-fx-background-color: #2D75E8;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="130.0" layoutY="44.0" text="SOschool" textFill="WHITE">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+            <Label layoutX="136.0" layoutY="105.0" text="School Mangement " textFill="WHITE">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Label>
+            <FontAwesomeIcon fill="WHITE" glyphName="MORTAR_BOARD" layoutX="44.0" layoutY="106.0" size="60" />
+            <Button fx:id="returnBtn" layoutX="31.0" layoutY="134.0" mnemonicParsing="false" onAction="#switchForm" prefWidth="8.0">
+               <graphic>
+                  <FontAwesomeIcon glyphName="ANGLE_DOUBLE_LEFT" size="2em" wrappingWidth="11.047629594802856" />
+               </graphic>
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+      <AnchorPane fx:id="DashbordForm" layoutX="40.0" layoutY="228.0" prefHeight="320.0" prefWidth="874.0" visible="false" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="19.0">
+         <children>
+            <GridPane alignment="CENTER" hgap="10.0" prefHeight="320.0" prefWidth="859.0" vgap="10.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button fx:id="MaternelleFormBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#switchForm" prefHeight="181.0" prefWidth="242.0" stylesheets="@../css/fullpackstyling.css" text="Maternelle">
+                     <graphic>
+                        <FontAwesomeIcon fill="#2d75e8" glyphName="CHILD" size="50" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="PrimaireFormBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#switchForm" prefHeight="181.0" prefWidth="242.0" stylesheets="@../css/fullpackstyling.css" text="Primaire" GridPane.columnIndex="1">
+                     <graphic>
+                        <FontAwesomeIcon fill="#2d75e8" glyphName="LEANPUB" size="50" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="collegeFormBtn" contentDisplay="TOP" mnemonicParsing="false" onAction="#switchForm" prefHeight="181.0" prefWidth="242.0" stylesheets="@../css/fullpackstyling.css" text="Collège" GridPane.columnIndex="2">
+                     <graphic>
+                        <FontAwesomeIcon fill="#2d75e8" glyphName="SLIDESHARE" size="50" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="secondaireFormBtn" contentDisplay="TOP" layoutX="321.0" layoutY="79.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="181.0" prefWidth="242.0" stylesheets="@../css/fullpackstyling.css" text="Secondaire" GridPane.columnIndex="3">
+                     <graphic>
+                        <FontAwesomeIcon fill="#2d75e8" glyphName="INSTITUTION" size="50" />
+                     </graphic>
+                  </Button>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="MaternelleForm" layoutX="5.0" layoutY="179.0" prefHeight="437.0" prefWidth="933.0">
+         <children>
+            <ListView fx:id="matTeacherListView" layoutX="42.0" layoutY="63.0" onMouseClicked="#MatTeacherListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <ListView fx:id="matClasseListView" layoutX="345.0" layoutY="63.0" onMouseClicked="#matClasseListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="60.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des enseignants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ListView fx:id="matStudentsListView" layoutX="651.0" layoutY="63.0" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="389.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des classes:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="669.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des etudiants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="PrimaireForm" layoutX="5.0" layoutY="177.0" prefHeight="437.0" prefWidth="933.0" visible="false">
+         <children>
+            <ListView fx:id="PriTeacherListView" layoutX="42.0" layoutY="63.0" onMouseClicked="#PriTeacherListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <ListView fx:id="PriClasseListView" layoutX="345.0" layoutY="63.0" onMouseClicked="#PriClasseListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="60.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des enseignants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ListView fx:id="PriStudentsListView" layoutX="651.0" layoutY="63.0" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="389.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des classes:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="669.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des etudiants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="collegeForm" layoutX="5.0" layoutY="183.0" prefHeight="429.0" prefWidth="933.0" visible="false">
+         <children>
+            <ListView fx:id="colTeacherListView" layoutX="42.0" layoutY="63.0" onMouseClicked="#colTeacherListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <ListView fx:id="colClasseListView" layoutX="345.0" layoutY="63.0" onMouseClicked="#colClasseListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="60.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des enseignants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ListView fx:id="colStudentsListView" layoutX="651.0" layoutY="63.0" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="389.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des classes:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="669.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des etudiants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="secondaireForm" layoutX="7.0" layoutY="181.0" prefHeight="429.0" prefWidth="925.0" visible="false">
+         <children>
+            <ListView fx:id="SecTeacherListView" layoutX="42.0" layoutY="63.0" onMouseClicked="#SecTeacherListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <ListView fx:id="SecClasseListView" layoutX="345.0" layoutY="63.0" onMouseClicked="#SecClasseListViewSelected" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="60.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des enseignants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <ListView fx:id="SecStudentsListView" layoutX="651.0" layoutY="63.0" prefHeight="354.0" prefWidth="243.0" style="-fx-font-size: 19px;" />
+            <Label layoutX="389.0" layoutY="27.0" prefHeight="17.0" prefWidth="208.0" text="Liste des classes:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label layoutX="680.0" layoutY="27.0" prefHeight="30.0" prefWidth="178.0" text="Liste des etudiants:" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
