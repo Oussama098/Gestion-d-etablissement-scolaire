@@ -213,7 +213,7 @@ public class SeanceController {
     }
     public static void main (String []args){
         SeanceController st = new SeanceController();
-        System.out.println(st.getSessionByTeacher(1));
+        System.out.println(st.getSessionByClass(1));
         
     }
 }

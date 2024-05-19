@@ -399,15 +399,20 @@ public class AdminMainFormController implements Initializable {
                 try (PDDocument document = new PDDocument()) {
                     PDPage page = new PDPage(PDRectangle.A4);
                     document.addPage(page);
+
                     PDFont font = PDType1Font.HELVETICA;
+
                     try (PDPageContentStream contentStream = new PDPageContentStream(document, page, AppendMode.APPEND, true)) {
                         File file = new File("C:/Users/oussa/OneDrive/Bureau/ministre.jpg");
                         PDImageXObject image = PDImageXObject.createFromFileByContent(file, document);
                         contentStream.drawImage(image, 50, 750, 500, 100);
+
                         contentStream.beginText();
                         contentStream.setFont(font, 12);
+
                         // Adjust the starting coordinates for A4
                         contentStream.newLineAtOffset(72, 750);
+
                         PDFont pdfFont = PDType1Font.HELVETICA;
                         float fontSize = 12;
                         float leading = 1.5f * fontSize;
@@ -475,11 +480,8 @@ public class AdminMainFormController implements Initializable {
                 }
             }
         }
-        if(selectedStudents.isEmpty()){
-            alert.errorMessage("Selectionner un element");
-        }else{
-            alert.successMessage("Succes");
-        }
+        alert.successMessage("Succes");
+    
     }
     
     void MarksChart(){
@@ -512,6 +514,8 @@ public class AdminMainFormController implements Initializable {
         }
         
     }
+    
+    
     
     void AbsenceChartDSByClasse(int id_classe){
         AbsenceChart.getData().clear();

@@ -8,9 +8,6 @@ import javafx.collections.ObservableList;
 import java.sql.*;
 import javafx.collections.FXCollections;
 import model.cycle;
-import model.enseignant;
-import model.specialite;
-import model.user;
 
 /**
  *
@@ -66,39 +63,8 @@ public class CycleController {
         }
     }
     
-    public ObservableList<enseignant> getAllTeachersByCycle(String nom){
-        ObservableList items = FXCollections.observableArrayList();
-        try {
-        PreparedStatement ps = cnxDB.getCon().prepareStatement("SELECT `enseignant`.`id_enseignant` AS `enseignantID`,"
-                + " `enseignant`.`id_user` AS `enseignantUserID`, `enseignant`.`id_cycle` AS `enseignantCycleID`"
-                + ", `enseignant`.`id_specialite` AS `enseignantSpecialiteID`"
-                + ", `user`.`id_user` AS `userID`, `user`.`nom` AS `userNom`"
-                + ", `user`.`prenom` AS `userPrenom`, `user`.`email` AS `userEmail`"
-                + ", `user`.`role` AS `useRole`, `user`.`datenais` AS `userDateNais`"
-                + ", `user`.`lieunais` AS `userLieuNais`, `user`.`Telephone` AS `userTele`"
-                + ", `user`.`sexe` AS `userSexe`, `user`.`photo` AS `userPhoto`, `cycle`.`id_cycle` AS `cycleID`"
-                + ", `cycle`.`code` AS `cycleCode`, `cycle`.`nom` AS `cycleNom`"
-                + ", `specialite`.`id_specialite` AS `specialiteID`, `specialite`.`nom` AS `specialiteNom`\n" +
-                "FROM `enseignant` \n" +
-                "	LEFT JOIN `user` ON `enseignant`.`id_user` = `user`.`id_user` \n" +
-                "	LEFT JOIN `cycle` ON `enseignant`.`id_cycle` = `cycle`.`id_cycle` \n" +
-                "	LEFT JOIN `specialite` ON `enseignant`.`id_specialite` = `specialite`.`id_specialite`"
-                + "where `cycle`.`nom`= ?;");
-        ps.setString(1, nom);
-        ResultSet rs= ps.executeQuery();
-        while(rs.next()){
-            items.add(new enseignant(rs.getInt("enseignantID"), new user(rs.getInt("userID"),rs.getString("userNom"), rs.getString("userPrenom"), rs.getString("userEmail"), rs.getString("userDateNais"),rs.getString("userLieuNais"),rs.getString("userTele"),rs.getString("userSexe"),rs.getString("userPhoto"),rs.getString("useRole")), new cycle(rs.getInt("cycleID"), rs.getString("cycleCode"), rs.getString("cycleNom")),new specialite(rs.getInt("specialiteID"), rs.getString("specialiteNom"))));
-        }
-        return items;
-    } catch (Exception e) {
-        e.printStackTrace();
-        return null;
-    }
-        
-    }
-    
     public static void main(String []args){
         CycleController cycle = new CycleController();
-        System.out.println(cycle.getAllTeachersByCycle("Maternelle"));
+        System.out.println(cycle.getAllCycles());
     }
 }
