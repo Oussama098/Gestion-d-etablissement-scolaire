@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TeacherMainFormController">
    <children>
@@ -63,7 +64,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="TeacherDATA" prefHeight="561.0" prefWidth="876.0" visible="false">
+                        <AnchorPane fx:id="TeacherDATA" prefHeight="561.0" prefWidth="876.0">
                            <children>
                               <AnchorPane layoutX="14.0" layoutY="19.0" prefHeight="524.0" prefWidth="510.0" stylesheets="@../css/MainForm.css" AnchorPane.bottomAnchor="19.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="359.0" AnchorPane.topAnchor="19.0">
                                  <styleClass>
@@ -77,11 +78,7 @@
                                           <Font size="18.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="ClassesData" layoutX="50.0" layoutY="104.0" prefHeight="35.0" prefWidth="435.0">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Label>
+                                    <TextFlow fx:id="ClassesData" layoutX="39.0" layoutY="104.0" prefHeight="200.0" prefWidth="438.0" style="-fx-font-size: 16px;" />
                                  </children>
                               </AnchorPane>
                               <AnchorPane layoutX="542.0" layoutY="19.0" prefHeight="524.0" prefWidth="327.0" stylesheets="@../css/MainForm.css" AnchorPane.bottomAnchor="19.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="19.0">

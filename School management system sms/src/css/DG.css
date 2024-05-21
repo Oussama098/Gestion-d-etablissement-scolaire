@@ -1,0 +1,43 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.main-bg{
+    -fx-background-color: linear-gradient(to bottom right, #007bff, #0c4685);
+}
+
+
+/* Style des boutons au survol */
+.button {
+    -fx-background-color: #cce5ff;
+    -fx-border-color: #cce5ff;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-font-family: "nunito", "roboto", "proxima-nova", "proxima nova", sans-serif;
+    -fx-font-weight: 800;
+    -fx-cursor: hand;
+    
+}
+
+/* Style des boutons au survol et au clic */
+.button:hover,.button:pressed {
+    -fx-background-color: initial;
+}
+
+/* Style des boutons lorsqu'ils sont désactivés */
+.button:disabled {
+    -fx-opacity: 0.5;
+    -fx-cursor: default;
+}
+
+.nav-btn{
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-border-color: #fff;
+    -fx-border-width: .8px;
+    -fx-text-fill: black;
+}
+.nav-btn:hover{
+    -fx-background-color: #cce5ff;
+    -fx-border-color: #0abfa4;
+}

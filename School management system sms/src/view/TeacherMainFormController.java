@@ -32,6 +32,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javax.swing.JOptionPane;
 import model.enseignant;
@@ -80,7 +81,7 @@ public class TeacherMainFormController implements Initializable {
     private AnchorPane AddMarksForm;
 
     @FXML
-    private Label ClassesData;
+    private TextFlow  ClassesData;
 
     @FXML
     private AnchorPane Classes_Form;
@@ -256,8 +257,14 @@ public class TeacherMainFormController implements Initializable {
             }else{
                 sexe.setText("Female");
             }
+            ArrayList<String> list = new ArrayList<>();
             for (seance ob : seance) {
-                ClassesData.setText(ob.getSeancegenerique().getClasse().getClassegenerique().getCycle().getCode()+" "+ob.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" " + ob.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode()+" : " + ob.getSeancegenerique().getJour()+"  "+ob.getSeancegenerique().getDatedeb() + "h -->" + ob.getSeancegenerique().getDatefin()+"\n");
+                list.add(ob.getSeancegenerique().getClasse().getClassegenerique().getCycle().getCode()+" "+ob.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" " + ob.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode()+" : " + ob.getSeancegenerique().getJour()+"  "+ob.getSeancegenerique().getDatedeb() + "h -->" + ob.getSeancegenerique().getDatefin());
+                list.add("\n");
+                list.add("\n");
+            }
+            for (String s : list) {
+                ClassesData.getChildren().add(new Text(s));
             }
             
         }
@@ -359,6 +366,12 @@ public class TeacherMainFormController implements Initializable {
         AbsenceStudent_classe.setCellValueFactory(new PropertyValueFactory<>("nomClasse"));
         AbsenceStudent_check.setCellValueFactory(new PropertyValueFactory<>("select"));
         Abcense_tableView.setItems(etd.getAllStudentsByClasseAndSeance(id_classe, id_seance));
+        for (etudiant ob : Abcense_tableView.getItems()) {
+            int id_etudiant = ob.getId_etudiant();
+            if(absence.ExistStudentAbsence(new etudiant(id_etudiant), new seance(id_seance))){
+                ob.getSelect().setSelected(true);
+            }
+        }
         
     }
     
@@ -386,24 +399,28 @@ public class TeacherMainFormController implements Initializable {
 
     @FXML
     void logoutBtn(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        if(alert.confirmMessage("Vous Voulez Déconnecté(e) !!")){
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        try {
-            // Load the inscriptionForm.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Inscription.fxml"));
-            Parent root = loader.load();
+            try {
+                // Load the inscriptionForm.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Inscription.fxml"));
+                Parent root = loader.load();
 
-            // Hide the current stage
-            stage.hide();
+                // Hide the current stage
+                stage.hide();
 
-            // Create a new stage for the inscription form
-            Stage newStage = new Stage();
-            newStage.setScene(new Scene(root));
-            newStage.setTitle("Inscription Form");
-            newStage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
+                // Create a new stage for the inscription form
+                Stage newStage = new Stage();
+                newStage.setScene(new Scene(root));
+                newStage.setTitle("Inscription Form");
+                newStage.setResizable(false);
+                newStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+            
     }
 
     void FillSeanceComboBox(){
@@ -411,7 +428,7 @@ public class TeacherMainFormController implements Initializable {
         if(absenceClasses.getSelectionModel().getSelectedItem()!=null){
             int id_classe=Integer.parseInt(absenceClasses.getSelectionModel().getSelectedItem().toString().split(":")[0]);
             for (seance ob : sc.getSessionByClass(id_classe)) {
-                items.add(ob.getId_seance()+":"+ob.getSeancegenerique().getJour()+" "+ob.getSeancegenerique().getDatedeb()+"->" + ob.getSeancegenerique().getDatedeb()+" "+ob.getDate().toString());
+                items.add(ob.getId_seance()+":"+ob.getSeancegenerique().getJour()+" "+ob.getSeancegenerique().getDatedeb()+"->" + ob.getSeancegenerique().getDatefin()+" "+ob.getDate().toString());
             }
             comboSeanceByClass.setItems(items);
         }
@@ -497,7 +514,9 @@ public class TeacherMainFormController implements Initializable {
                 boolean justification= false;
                 String motif = "";
                 try {
-                    absence.insert(new absenceetudiant(new etudiant(id_etudiant), new seance(id_seance), justification, motif));
+                    if(!absence.ExistStudentAbsence(etudiant, new seance(id_seance))){
+                        absence.insert(new absenceetudiant(new etudiant(id_etudiant), new seance(id_seance), justification, motif));
+                    }
                 }catch (Exception e) {
                     e.printStackTrace();
                     alert.errorMessage(e.getMessage());
@@ -631,8 +650,14 @@ public class TeacherMainFormController implements Initializable {
         }else{
             sexe.setText("Female");
         }
+        ArrayList<String> list = new ArrayList<>();
         for (seance ob : seance) {
-            ClassesData.setText(ob.getSeancegenerique().getClasse().getClassegenerique().getCycle().getCode()+" "+ob.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" " + ob.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode()+" : " + ob.getSeancegenerique().getJour()+"  "+ob.getSeancegenerique().getDatedeb() + "h -->" + ob.getSeancegenerique().getDatefin()+"\n");
+            list.add(ob.getSeancegenerique().getClasse().getClassegenerique().getCycle().getCode()+" "+ob.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" " + ob.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode()+" : " + ob.getSeancegenerique().getJour()+"  "+ob.getSeancegenerique().getDatedeb() + "h -->" + ob.getSeancegenerique().getDatefin());
+            list.add("\n");
+            list.add("\n");
+        }
+        for (String s : list) {
+            ClassesData.getChildren().add(new Text(s));
         }
         
         absenceClasses.setOnAction(event -> FillSeanceComboBox());
@@ -645,10 +670,6 @@ public class TeacherMainFormController implements Initializable {
             
             
     }
-
-
-    
-    
 
 }
 

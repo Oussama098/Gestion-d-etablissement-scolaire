@@ -366,6 +366,9 @@ public class EtudiantController {
         return ps.executeUpdate();
     }
     
+    
+    
+    
     public static void main(String args[]){
         EtudiantController etd = new EtudiantController();
         System.out.println(etd.getAllStudentsByClasse(1));

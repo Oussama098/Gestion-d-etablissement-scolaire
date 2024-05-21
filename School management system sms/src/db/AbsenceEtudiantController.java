@@ -175,7 +175,7 @@ public class AbsenceEtudiantController {
             "    `cycle`.`id_cycle` AS `cycle_id`,\n" +
             "    `cycle`.`code` AS `cycle_code`,\n" +
             "    `cycle`.`nom` AS `cycle_nom`,\n" +
-            "    COUNT(absenceetudiant.ID)>1 AS absence_count\n" +
+            "    COUNT(absenceetudiant.ID) AS absence_count\n" +
             "FROM\n" +
             "    etudiant\n" +
             "LEFT JOIN absenceetudiant ON etudiant.id_etudiant = absenceetudiant.id_etudiant\n" +
@@ -215,6 +215,22 @@ public class AbsenceEtudiantController {
             e.printStackTrace();
             return null;
         }
+    }
+    
+    public boolean ExistStudentAbsence(etudiant etudaint , seance seance){
+        try {
+            PreparedStatement ps = cnxDB.getCon().prepareStatement("SELECT  * FROM `absenceetudiant` WHERE id_etudiant=? and id_seance=?");
+            ps.setInt(1, etudaint.getId_etudiant());
+            ps.setInt(2, seance.getId_seance());
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
     }
     
     public static void main(String [] args){

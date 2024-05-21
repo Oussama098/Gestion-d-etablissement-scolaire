@@ -27,6 +27,15 @@ public class seancegenerique {
         this.datefin = datefin;
         this.observation = observation;
     }
+    
+    public seancegenerique (enseignant enseignant , classe classe){
+        this.enseignant = enseignant;
+        this.classe = classe;
+    }
+    
+    public seancegenerique(int id_seancegenerique){
+        this.id_seancegenerique=id_seancegenerique;
+    }
 
     public int getId_seancegenerique() {
         return id_seancegenerique;

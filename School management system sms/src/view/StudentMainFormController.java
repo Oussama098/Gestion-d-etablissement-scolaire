@@ -13,7 +13,11 @@ import java.util.ResourceBundle;
 import javafx.collections.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.*;
 import javafx.scene.control.TableColumn;
@@ -24,6 +28,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import model.absenceetudiant;
 import model.docjustifabsetudiant;
 import model.seance;
@@ -185,9 +190,9 @@ public class StudentMainFormController implements Initializable{
             }else{
                 sexe.setText("Female");
             }
-
             for (seance sc : seance) {
                 Classe.setText(sc.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" "+ sc.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode());
+                System.out.println(sc.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" "+ sc.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode());
                 subjectDATA.setText( sc.getSeancegenerique().getModule().getNom()+" : "+sc.getSeancegenerique().getMatiere().getNom()+ "( "+ sc.getSeancegenerique().getJour()+ " ["+sc.getSeancegenerique().getDatedeb()+" , "+sc.getSeancegenerique().getDatefin()+"] )");
             }
         }
@@ -203,6 +208,8 @@ public class StudentMainFormController implements Initializable{
             MarksForm.setVisible(false);
             populateTypeJustDoc();
             populateAbsence_tableView();
+            enabledField(true);
+            AbsenceClearBtn();
         } 
     }
     
@@ -267,7 +274,7 @@ public class StudentMainFormController implements Initializable{
             ABjustifdocDateFin.getValue() == null ||
             ABjustifdocType.getSelectionModel().isEmpty() ||
             ABjustifdocObservation.getText().isEmpty() ||
-            ABjustifdocDateDeb.getValue().isAfter(ABjustifdocDateFin.getValue()) ||
+            ABjustifdocDateFin.getValue().isAfter(ABjustifdocDateDeb.getValue()) ||
             ABjustifdocPath.getText().isEmpty()) {
             isValid = false;
         }
@@ -337,6 +344,33 @@ public class StudentMainFormController implements Initializable{
         MarksNoteExamen.setCellValueFactory(new PropertyValueFactory<>("noteExamen"));
         MarksTableView.setItems(items);
     }
+    
+    @FXML
+    void Logout(ActionEvent event) {
+        if(alert.confirmMessage("Vous Voulez Déconnecté(e) !!")){
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            try {
+                // Load the inscriptionForm.fxml
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Inscription.fxml"));
+                Parent root = loader.load();
+
+                // Hide the current stage
+                stage.hide();
+
+                // Create a new stage for the inscription form
+                Stage newStage = new Stage();
+                newStage.setScene(new Scene(root));
+                newStage.setTitle("Inscription Form");
+                newStage.setResizable(false);
+                newStage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
+    }
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
             StudentDATA.setVisible(true);
@@ -354,8 +388,9 @@ public class StudentMainFormController implements Initializable{
                 sexe.setText("Female");
             }
             for (seance sc : seance) {
-            Classe.setText(sc.getSeancegenerique().getClasse().getId_classe()+"");
+            Classe.setText(sc.getSeancegenerique().getClasse().getClassegenerique().getNiveau().getCode()+" "+ sc.getSeancegenerique().getClasse().getClassegenerique().getFiliere().getCode()+" "+sc.getSeancegenerique().getClasse().getClassegenerique().getCycle().getCode());
             subjectDATA.setText( sc.getSeancegenerique().getModule().getNom()+" : "+sc.getSeancegenerique().getMatiere().getNom()+ "( "+ sc.getSeancegenerique().getJour()+ " ["+sc.getSeancegenerique().getDatedeb()+" , "+sc.getSeancegenerique().getDatefin()+"] )");
+                //System.out.println( sc.getSeancegenerique().getModule().getNom()+" : "+sc.getSeancegenerique().getMatiere().getNom()+ "( "+ sc.getSeancegenerique().getJour()+ " ["+sc.getSeancegenerique().getDatedeb()+" , "+sc.getSeancegenerique().getDatefin()+"] )");
             
             }
     }   

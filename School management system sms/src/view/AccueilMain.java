@@ -26,6 +26,7 @@ public class AccueilMain extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("accueil.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
+            primaryStage.setResizable(false);
             primaryStage.setTitle("SOschool"); // Set the window title
             primaryStage.show();
         

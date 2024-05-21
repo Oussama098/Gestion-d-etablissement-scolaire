@@ -17,24 +17,48 @@ public class AccueilController {
     private Button GotoCnx;
 
     @FXML
-    private AnchorPane accueilForm;
+    private Button accueilBtn;
 
     @FXML
-    private AnchorPane inscrirForm;
+    private AnchorPane accueilForm;
 
     @FXML
     void goToInscription(ActionEvent event) throws IOException{
         try {
             Parent root = FXMLLoader.load(getClass().getResource("Inscription.fxml"));
-        Stage stage = new Stage();
-        //stage.setTitle("University Management System | Student Portal");
-        stage.setScene(new Scene(root));
-        stage.show();
-        GotoCnx.getScene().getWindow().hide();
+            Stage stage = new Stage();
+            stage.setTitle("Page De Connexion");
+            stage.setResizable(false);
+            stage.setScene(new Scene(root));
+            stage.show();
+            GotoCnx.getScene().getWindow().hide();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }     
     }
+    
+
+
+    @FXML
+    void switchForm(ActionEvent event) {
+        if(event.getSource()==accueilBtn){
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("DataGeneral.fxml"));
+                Parent root = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Accueil Form");
+                stage.setResizable(false);
+                accueilBtn.getScene().getWindow().hide();
+            stage.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+        }
+    }
+    
+    
     
     
 

@@ -6,6 +6,8 @@ import db.filiereController;
 import db.niveauController;
 import java.io.File;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -64,7 +66,7 @@ public class AddStudentController implements Initializable {
     private TextField student_fname;
 
     @FXML
-    private ComboBox<?> student_gender;
+    private ComboBox<String> student_gender;
 
     @FXML
     private ImageView student_imageView;
@@ -116,7 +118,6 @@ public class AddStudentController implements Initializable {
     }
     
     void ClearBtn() {
-        
             student_fname.clear();
             student_lname.clear();
             student_birthDate.setValue(null);
@@ -128,6 +129,7 @@ public class AddStudentController implements Initializable {
             student_imageView.setImage(null);
             student_ClassID.clear();
             student_Classe.clear();
+            student_gender.getSelectionModel().clearSelection();
             student_cycle.getSelectionModel().clearSelection();
             student_filiere.getSelectionModel().clearSelection();
             student_niveau.getSelectionModel().clearSelection();
@@ -141,6 +143,7 @@ public class AddStudentController implements Initializable {
             student_phone.getText().isEmpty() ||
             student_birthDate.getValue() == null ||
             student_gender.getSelectionModel().isEmpty() ||
+            student_Classe.getText().isEmpty()||
             student_birthplace.getText().isEmpty()) {
             return false;
         }
@@ -150,7 +153,7 @@ public class AddStudentController implements Initializable {
     void addBtn(ActionEvent event) {
         if(event.getSource() == student_addBtn){
             if(!formValidate()){
-                alert.errorMessage("Form Invalid");
+                alert.errorMessage("Formulaire Invalide !!!!");
                 return;
             }
             String fname=student_fname.getText();
@@ -202,6 +205,23 @@ public class AddStudentController implements Initializable {
         
     }
     
+    void fillFormUpdateStudent(){
+        ClearBtn();
+        etudiant etd =AdminMainFormController.selectedStudent;
+        student_fname.setText(AdminMainFormController.selectedStudent.getPrenom());
+        student_lname.setText(AdminMainFormController.selectedStudent.getNom());
+        student_email.setText(AdminMainFormController.selectedStudent.getEmail());
+        student_phone.setText(AdminMainFormController.selectedStudent.getTele());
+        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate datenaissance = LocalDate.parse(AdminMainFormController.selectedStudent.getDateNais(), inputFormatter);
+        String formattedDate = datenaissance.format(outputFormatter);
+        student_birthDate.setValue(LocalDate.parse(formattedDate));
+        student_gender.getSelectionModel().select(AdminMainFormController.selectedStudent.getSexe());
+        student_birthplace.setText(AdminMainFormController.selectedStudent.getLieuNais());
+
+        
+    }
     void populateGender(){
         ArrayList<String> gender = new ArrayList();
         gender.add("Female");
@@ -294,6 +314,7 @@ public class AddStudentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        ClearBtn();
         populateGender();
         populateNiveau();
         populateFiliere();
@@ -304,6 +325,12 @@ public class AddStudentController implements Initializable {
         student_niveau.setOnAction(event -> FillClassTextFields());
         student_cycle.setOnAction(event -> FillClassTextFields());
         student_filiere.setOnAction(event -> FillClassTextFields());
+        if (AdminMainFormController.selectedStudent.getUser() != null) {
+            fillFormUpdateStudent();
+        }
+         
+        
+        
         
     }
     

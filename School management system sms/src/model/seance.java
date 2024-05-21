@@ -30,6 +30,12 @@ public class seance {
         this.id_seance = id_seance;
     }
     
+    public seance(seancegenerique seancegenerique) {
+        this.seancegenerique = seancegenerique;
+    }
+    
+    
+    
     
 
     public int getId_seance() {

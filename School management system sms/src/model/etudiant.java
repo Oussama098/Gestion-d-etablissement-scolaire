@@ -26,6 +26,9 @@ public class etudiant {
     }
    
 
+    public etudiant(){
+        
+    }
     public etudiant(int id_etudiant, user User, filiere filiere , classe classe) {
         this.id_etudiant = id_etudiant;
         this.User = User;

@@ -26,6 +26,11 @@ public class enseignant {
         this.cycle = cycle;
         this.specialite = specialite;
     }
+
+    public enseignant(int id_enseignant) {
+        this.id_enseignant = id_enseignant;
+    }
+   
     
     
 

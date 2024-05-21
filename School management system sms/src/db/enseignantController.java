@@ -98,6 +98,28 @@ public class enseignantController {
         }
     }
     
+    public boolean ExistTeacher(String nom , String prenom , String email){
+        try {
+            PreparedStatement ps = cnxDB.getCon().prepareStatement("SELECT\n" +
+            "    *\n" +
+            "FROM\n" +
+            "    `enseignant`\n" +
+            "    LEFT JOIN user on enseignant.id_user = user.id_user\n" +
+            "    WHERE user.nom= ? and user.prenom =? and user.email=? ");
+            ps.setString(1, nom);
+            ps.setString(2, prenom);
+            ps.setString(3, email);
+            ResultSet rs= ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return false;
+    }
+    
 //    public ObservableList getAllStudentsByTeacher(int id){
 //        ObservableList<user> List = FXCollections.observableArrayList();
 //        try {
@@ -240,6 +262,8 @@ public class enseignantController {
 
     }
     
+        
+        
     public ObservableList getAllStudentsByTeacherAndClasse(int id_Teacher , int id_Classe){
         ObservableList<etudiant> List = FXCollections.observableArrayList();
         try {
@@ -416,7 +440,9 @@ public class enseignantController {
 //            String gender="M";
 //        tsh.update(new user(id_user, lname, fname, Email, dateNais, LieuNais, Tele, gender, ""));
 //        tsh.update(new enseignant(new user(id_user), new cycle(3), new specialite(1)));
-        System.out.println(tsh.getAllStudentsByTeacherAndClasse(3, 2));
+//        System.out.println(tsh.getAllStudentsByTeacherAndClasse(3, 2));
+//        System.out.println(tsh.ExistTeacher("el baouri", "khalid", "khalid@gmail.com"));
+           System.out.println(tsh.getTeacherById(1));
 
     }
 }

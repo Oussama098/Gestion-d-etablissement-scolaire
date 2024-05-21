@@ -47,7 +47,8 @@ public class InscriptionController implements Initializable{
                 
             Parent root = FXMLLoader.load(getClass().getResource("StudentMainForm.fxml"));
                 Stage stage = new Stage();
-                stage.setTitle("Student Main Form");
+                stage.setTitle("Etudiant Form");
+                stage.setResizable(false);
                 stage.setScene(new Scene(root));
                 stage.show();
                 cnxBTN.getScene().getWindow().hide();
@@ -55,7 +56,8 @@ public class InscriptionController implements Initializable{
                 if(auto.getUser().getRole().equals("teacher")){
                     Parent root = FXMLLoader.load(getClass().getResource("TeacherMainForm.fxml"));
                     Stage stage = new Stage();
-                    stage.setTitle("Teacher Main Form");
+                    stage.setTitle("Enseignant Form");
+                    stage.setResizable(false);
                     stage.setScene(new Scene(root));
                     stage.show();
                     cnxBTN.getScene().getWindow().hide(); 
@@ -63,7 +65,8 @@ public class InscriptionController implements Initializable{
                     if(auto.getUser().getRole().equals("admin")){
                         Parent root = FXMLLoader.load(getClass().getResource("AdminMainForm.fxml"));
                         Stage stage = new Stage();
-                        stage.setTitle("admin Main form");
+                        stage.setTitle("administration form");
+                        stage.setResizable(false);
                         stage.setScene(new Scene(root));
                         stage.show();
                         cnxBTN.getScene().getWindow().hide(); 

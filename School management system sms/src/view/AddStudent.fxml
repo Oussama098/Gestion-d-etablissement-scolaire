@@ -23,18 +23,18 @@
                </styleClass>
                <children>
                   <FontAwesomeIcon glyphName="USER" layoutX="416.0" layoutY="367.0" opacity="0.16" size="20em" />
-                  <Label layoutX="14.0" layoutY="14.0" text="Student Information">
+                  <Label layoutX="14.0" layoutY="14.0" text="Les information d'etudiant:">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Label layoutX="22.0" layoutY="99.0" text="First Name:" />
+                  <Label layoutX="34.0" layoutY="99.0" text="Prenom:" />
                   <TextField fx:id="student_fname" layoutX="89.0" layoutY="95.0" />
                   <DatePicker fx:id="student_birthDate" layoutX="89.0" layoutY="180.0" onAction="#countAge" prefHeight="25.0" prefWidth="149.0" />
                   <Label layoutX="303.0" layoutY="135.0" text="Email:" />
-                  <Label layoutX="277.0" layoutY="172.0" text="Birth Place:" />
-                  <Label layoutX="296.0" layoutY="210.0" text="Phone:" />
-                  <Label layoutX="296.0" layoutY="94.0" text="Gender:" />
+                  <Label layoutX="267.0" layoutY="172.0" text="Lieu De Nais:" />
+                  <Label layoutX="277.0" layoutY="210.0" text="Telephone:" />
+                  <Label layoutX="304.0" layoutY="94.0" text="Sexe:" />
                   <ComboBox fx:id="student_gender" layoutX="343.0" layoutY="90.0" prefWidth="150.0" promptText="Choose..." />
                   <AnchorPane layoutX="510.0" layoutY="25.0" prefHeight="113.0" prefWidth="100.0" stylesheets="@../css/MainForm.css">
                      <styleClass>
@@ -45,12 +45,12 @@
                         <ImageView fx:id="student_imageView" fitHeight="113.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
-                  <Button fx:id="student_importBtn" layoutX="510.0" layoutY="135.0" mnemonicParsing="false" onAction="#importBtn" prefHeight="25.0" prefWidth="100.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Import" />
-                  <Button fx:id="student_addBtn" layoutX="187.0" layoutY="366.0" mnemonicParsing="false" onAction="#addBtn" prefHeight="37.0" prefWidth="100.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Add" />
-                  <Button fx:id="student_ClearForm" layoutX="321.0" layoutY="366.0" mnemonicParsing="false" onAction="#ClearBtn" prefHeight="37.0" prefWidth="100.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Clear" />
-                  <Label layoutX="23.0" layoutY="184.0" text="Birth Date:" />
+                  <Button fx:id="student_importBtn" layoutX="510.0" layoutY="135.0" mnemonicParsing="false" onAction="#importBtn" prefHeight="25.0" prefWidth="100.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Importer" />
+                  <Button fx:id="student_addBtn" layoutX="187.0" layoutY="366.0" mnemonicParsing="false" onAction="#addBtn" prefHeight="37.0" prefWidth="100.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Enregistrer" />
+                  <Button fx:id="student_ClearForm" layoutX="321.0" layoutY="366.0" mnemonicParsing="false" onAction="#ClearBtn" prefHeight="37.0" prefWidth="100.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Vider" />
+                  <Label layoutX="10.0" layoutY="180.0" prefHeight="17.0" prefWidth="82.0" text="Date De Nais:" />
                   <TextField fx:id="student_lname" layoutX="90.0" layoutY="137.0" />
-                  <Label layoutX="22.0" layoutY="141.0" text="Last Name:" />
+                  <Label layoutX="45.0" layoutY="141.0" text="Nom:" />
                   <TextField fx:id="student_email" layoutX="342.0" layoutY="129.0" prefHeight="25.0" prefWidth="150.0" />
                   <TextField fx:id="student_birthplace" layoutX="343.0" layoutY="168.0" />
                   <TextField fx:id="student_phone" layoutX="342.0" layoutY="209.0" />
@@ -60,7 +60,7 @@
                   <ComboBox fx:id="student_niveau" layoutX="88.0" layoutY="261.0" prefWidth="150.0" promptText="Choose..." />
                   <Label layoutX="41.0" layoutY="304.0" text="Filere :" />
                   <ComboBox fx:id="student_filiere" layoutX="88.0" layoutY="300.0" prefWidth="150.0" promptText="Choose..." />
-                  <Label layoutX="288.0" layoutY="247.0" text="Class:" />
+                  <Label layoutX="296.0" layoutY="247.0" text="Classe:" />
                   <TextField fx:id="student_Classe" disable="true" layoutX="342.0" layoutY="246.0" />
                   <Label layoutX="287.0" layoutY="282.0" text="ClassID:" visible="false" />
                   <TextField fx:id="student_ClassID" editable="false" layoutX="341.0" layoutY="281.0" visible="false" />

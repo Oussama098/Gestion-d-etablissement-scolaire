@@ -10,6 +10,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -28,47 +29,52 @@
                <left>
                   <AnchorPane prefHeight="600.0" prefWidth="219.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="10.0" layoutY="127.0" prefHeight="600.0" prefWidth="219.0" styleClass="main-bg" stylesheets="@../css/MainForm.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="10.0" layoutY="127.0" prefHeight="573.0" prefWidth="227.0" styleClass="main-bg" stylesheets="@../css/MainForm.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-8.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="86.0" layoutY="65.0" size="5em" />
-                              <Label fx:id="greet_username" layoutX="53.0" layoutY="74.0" text="Bienvenue, Admin" textFill="WHITE">
+                              <FontAwesomeIcon fill="WHITE" glyphName="USER" layoutX="89.0" layoutY="65.0" size="5em" />
+                              <Label fx:id="greet_username" layoutX="56.0" layoutY="74.0" text="Bienvenue, Admin" textFill="WHITE">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="dashboard_btn" layoutX="10.0" layoutY="146.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Accueil">
+                              <Button fx:id="dashboard_btn" layoutX="13.0" layoutY="146.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Accueil">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="DASHBOARD" size="1.5em" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="addStudent_btn" layoutX="10.0" layoutY="231.0" mnemonicParsing="false" onAction="#switchFormStudent" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Ajouter Etudiant">
+                              <Button fx:id="addStudent_btn" layoutX="13.0" layoutY="212.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Ajouter Etudiant">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="PLUS_CIRCLE" size="1.5em" />
                                  </graphic>
                               </Button>
-                              <Button fx:id="addTeacher_btn" layoutX="10.0" layoutY="317.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Ajouter Enseignant">
+                              <Button fx:id="addTeacher_btn" layoutX="13.0" layoutY="283.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Ajouter Enseignant">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="1.5em" />
                                  </graphic>
                               </Button>
                               <Line endX="100.0" layoutX="110.0" layoutY="116.0" startX="-100.0" stroke="WHITE" />
-                              <Label layoutX="91.0" layoutY="514.0" text="Logout" textFill="WHITE">
+                              <Label layoutX="57.0" layoutY="522.0" prefHeight="21.0" prefWidth="111.0" text="Se Déconnecter" textFill="WHITE">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="Absencebtn" layoutX="11.0" layoutY="402.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="L'absence">
+                              <Button fx:id="Absencebtn" layoutX="13.0" layoutY="349.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="L'absence">
                                  <graphic>
                                     <FontAwesomeIcon fill="WHITE" glyphName="USERS" size="1.5em" />
                                  </graphic>
                               </Button>
+                              <Button fx:id="logout_btn" layoutX="14.0" layoutY="516.0" mnemonicParsing="false" onAction="#logoutBtn" styleClass="nav-btn" stylesheets="@../css/MainForm.css">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="2em" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="affecterBtn" layoutX="13.0" layoutY="412.0" mnemonicParsing="false" onAction="#switchForm" prefHeight="40.0" prefWidth="200.0" styleClass="nav-btn" stylesheets="@../css/MainForm.css" text="Affecter Les Classes">
+                                 <graphic>
+                                    <FontAwesomeIcon fill="WHITE" glyphName="PLUS" size="1.5em" />
+                                 </graphic>
+                              </Button>
                            </children>
                         </AnchorPane>
-                        <Button fx:id="logout_btn" layoutX="34.0" layoutY="509.0" mnemonicParsing="false" onAction="#logoutBtn" styleClass="nav-btn" stylesheets="@../css/MainForm.css">
-                           <graphic>
-                              <FontAwesomeIcon fill="WHITE" glyphName="SIGN_OUT" size="2em" />
-                           </graphic>
-                        </Button>
                      </children>
                   </AnchorPane>
                </left>
@@ -92,7 +98,7 @@
                      <children>
                         <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="563.0" prefWidth="881.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <AnchorPane fx:id="dashboard_form" layoutX="13.0" layoutY="14.0" prefHeight="563.0" prefWidth="881.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <AnchorPane fx:id="dashboard_form" layoutX="13.0" layoutY="14.0" prefHeight="563.0" prefWidth="881.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <AnchorPane layoutX="14.0" layoutY="14.0" prefHeight="147.0" prefWidth="856.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="14.0">
                                        <children>
@@ -311,9 +317,38 @@
                                           <TextField fx:id="addTeacher_lname" layoutX="102.0" layoutY="59.0" prefHeight="25.0" prefWidth="154.0" />
                                           <Label alignment="CENTER_RIGHT" layoutX="536.0" layoutY="28.0" text="Cycle:" />
                                           <ComboBox fx:id="addTeacher_cycle" layoutX="574.0" layoutY="24.0" prefHeight="24.0" prefWidth="150.0" promptText="Choose..." />
+                                          <DatePicker fx:id="addTeacher_BirthDay" layoutX="102.0" layoutY="99.0" onAction="#countAge" prefHeight="25.0" prefWidth="154.0" />
                                        </children>
                                     </AnchorPane>
-                                    <DatePicker fx:id="addTeacher_BirthDay" layoutX="116.0" layoutY="416.0" onAction="#countAge" prefHeight="25.0" prefWidth="154.0" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="affectClassesForm" layoutX="10.0" layoutY="10.0" prefHeight="563.0" prefWidth="881.0">
+                                 <children>
+                                    <AnchorPane layoutX="4.0" layoutY="-4.666666666666667" prefHeight="554.0" prefWidth="863.0" stylesheets="@../css/MainForm.css" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="4.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="-5.0">
+                                       <styleClass>
+                                          <String fx:value="white-bg" />
+                                          <String fx:value="shadow" />
+                                          <String fx:value="radius" />
+                                       </styleClass>
+                                       <children>
+                                          <ComboBox fx:id="aftTeachers" layoutX="305.0" layoutY="33.0" onAction="#populateAftTeachers" prefHeight="25.0" prefWidth="275.0" promptText="Choisir un Professeur..." />
+                                          <ListView fx:id="aftClassesListView" layoutX="74.0" layoutY="114.0" onMouseClicked="#AftSelectedClassesListView" prefHeight="357.0" prefWidth="308.0" style="-fx-font-size: 19px;" />
+                                          <Button fx:id="aftClassesAdd" layoutX="322.0" layoutY="504.0" mnemonicParsing="false" onAction="#aftClassesAddBtn" prefHeight="36.0" prefWidth="98.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Ajouter" />
+                                          <Button fx:id="aftClassesDelete" layoutX="465.0" layoutY="504.0" mnemonicParsing="false" onAction="#aftClassesDeleteBtn" prefHeight="36.0" prefWidth="98.0" styleClass="btn" stylesheets="@../css/MainForm.css" text="Supprimer" />
+                                          <Label layoutX="173.0" layoutY="37.0" prefHeight="17.0" prefWidth="107.0" text="Les Enseignants:" />
+                                          <Label layoutX="74.0" layoutY="79.0" prefHeight="22.0" prefWidth="265.0" text="Les Classes Du Enseignant:">
+                                             <font>
+                                                <Font name="Rockwell Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <ListView fx:id="aftClassesToTeacherListView" layoutX="518.0" layoutY="116.0" onMouseClicked="#AftSelectedClassesListView" prefHeight="357.0" prefWidth="308.0" style="-fx-font-size: 19px;" />
+                                          <Label layoutX="518.0" layoutY="81.0" prefHeight="22.0" prefWidth="265.0" text="Les Classes à Affecter :">
+                                             <font>
+                                                <Font name="Rockwell Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </AnchorPane>
                                  </children>
                               </AnchorPane>
                               <AnchorPane fx:id="AbsenceForm" layoutX="6.0" layoutY="8.0" prefHeight="563.0" prefWidth="881.0" visible="false">
@@ -339,7 +374,7 @@
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                              </columnResizePolicy>
                                           </TableView>
-                                          <ComboBox fx:id="AbsenceClasses" layoutX="387.0" layoutY="34.0" prefHeight="25.0" prefWidth="191.0" promptText="Choose..." visibleRowCount="3" />
+                                          <ComboBox fx:id="AbsenceClasses" layoutX="387.0" layoutY="34.0" onAction="#populateABSTableViewByClasse" prefHeight="25.0" prefWidth="191.0" promptText="Choose..." visibleRowCount="3" />
                                        </children>
                                     </AnchorPane>
                                  </children>
